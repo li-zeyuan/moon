@@ -1,4 +1,4 @@
-module user.logic.rpc
+module github.con/li-zeyuan/micro/user.logic.rpc
 
 go 1.16
 

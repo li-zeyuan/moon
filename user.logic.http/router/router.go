@@ -2,7 +2,8 @@ package router
 
 import (
 	"net/http"
-	"user.logic.http/app/api"
+
+	"github.con/li-zeyuan/micro/user.logic.http/app/api"
 )
 
 func Init(srv *http.ServeMux) {

@@ -5,8 +5,8 @@ import (
 	"log"
 	"net"
 
+	"github.con/li-zeyuan/micro/user.logic.rpc/pb"
 	"google.golang.org/grpc"
-	"user.logic.rpc/pb"
 )
 
 const (

@@ -3,7 +3,8 @@ package main
 import (
 	"log"
 	"net/http"
-	"user.logic.http/router"
+
+	"github.con/li-zeyuan/micro/user.logic.http/router"
 )
 
 func main() {
