@@ -5,5 +5,5 @@ const (
 )
 
 const (
-	AddressProfileServer = "localhost:50051"
+	AddressProfileServer = "localhost:7072"
 )

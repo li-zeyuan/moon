@@ -11,7 +11,7 @@ message  Profile {
 
 message UpsertReq {
     int64 uid = 1;
-    string string = 2;
+    string name = 2;
 }
 
 message UpsertResp {
