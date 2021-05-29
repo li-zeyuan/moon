@@ -4,7 +4,7 @@
 // 	protoc        v3.15.8
 // source: profile.proto
 
-package pb
+package profile
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"

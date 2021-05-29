@@ -1,6 +1,7 @@
 package api
 
 import (
+	"github.com/li-zeyuan/micro/micro.common.api/pb/profile"
 	"io"
 	"net/http"
 
@@ -8,10 +9,13 @@ import (
 	"github.com/li-zeyuan/micro/micro.common.api/utils"
 )
 
-func HelloHandler(w http.ResponseWriter, r *http.Request) {
+var Profile = new(profileAPI)
 
-	profileRpcReq := rpc.UpsertReq{}
-	profileRpcResp := rpc.UpsertResp{}
+type profileAPI struct{}
+
+func (p *profileAPI) Create(w http.ResponseWriter, r *http.Request) {
+	profileRpcReq := profile.UpsertReq{}
+	profileRpcResp := profile.UpsertResp{}
 	err := utils.Invoke(r.Context(), rpc.AddressProfileServer, rpc.UrlProfileUpsert, &profileRpcReq, &profileRpcResp)
 	if err != nil {
 		return

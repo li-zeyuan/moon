@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "github.com/li-zeyuan/micro/user.db.rpc/pb";
+option go_package = "github.com/li-zeyuan/micro/micro.common.api/pb/profile";
 
 package profile;
 
