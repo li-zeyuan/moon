@@ -5,7 +5,7 @@ import (
 	"log"
 	"net"
 
-	"github.con/li-zeyuan/micro/user.logic.rpc/pb"
+	"github.com/li-zeyuan/micro/user.db.rpc/pb"
 	"google.golang.org/grpc"
 )
 

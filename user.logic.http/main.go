@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.con/li-zeyuan/micro/user.logic.http/router"
+	"github.com/li-zeyuan/micro/user.logic.http/router"
 )
 
 func main() {
