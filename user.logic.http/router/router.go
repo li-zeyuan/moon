@@ -7,5 +7,5 @@ import (
 )
 
 func Init(srv *http.ServeMux) {
-	srv.HandleFunc("/api/profile/crate", api.Profile.Create)
+	srv.HandleFunc("/api/login/sing_up", api.Login.SingUp)
 }
