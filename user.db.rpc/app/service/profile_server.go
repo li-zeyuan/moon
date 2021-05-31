@@ -1,10 +1,10 @@
-package server
+package service
 
 import (
-	"github.com/li-zeyuan/micro/micro.common.api/pb/profile"
-
 	"context"
 	"log"
+
+	"github.com/li-zeyuan/micro/micro.common.api/pb/profile"
 )
 
 type ProfileServer struct {

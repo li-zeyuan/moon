@@ -5,7 +5,8 @@ import (
 	"net"
 
 	"github.com/li-zeyuan/micro/micro.common.api/pb/profile"
-	"github.com/li-zeyuan/micro/user.db.rpc/server"
+	"github.com/li-zeyuan/micro/user.db.rpc/app/service"
+	"github.com/li-zeyuan/micro/user.db.rpc/boot"
 	"google.golang.org/grpc"
 )
 
@@ -18,8 +19,11 @@ func main() {
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
+
+	boot.Init()
+
 	s := grpc.NewServer()
-	profile.RegisterProfileServiceServer(s, &server.ProfileServer{})
+	profile.RegisterProfileServiceServer(s, &service.ProfileServer{})
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
