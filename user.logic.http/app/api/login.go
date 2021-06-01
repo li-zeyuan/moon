@@ -7,7 +7,9 @@ import (
 	"github.com/li-zeyuan/micro/micro.common.api/pb/profile"
 	"github.com/li-zeyuan/micro/micro.common.api/utils"
 	"github.com/li-zeyuan/micro/user.logic.http/app/model"
-	"github.com/li-zeyuan/micro/user.logic.http/library"
+	"github.com/li-zeyuan/micro/user.logic.http/app/service"
+	"github.com/li-zeyuan/micro/user.logic.http/library/request"
+	"github.com/li-zeyuan/micro/user.logic.http/library/response"
 )
 
 var Login = new(loginAPI)
@@ -16,9 +18,15 @@ type loginAPI struct{}
 
 func (l *loginAPI) SingUp(w http.ResponseWriter, r *http.Request) {
 	apiReq := new(model.LoginApiSingUpReq)
-	err := library.ParseBody(r, apiReq)
+	err := request.ParseBody(r, apiReq)
 	if err != nil {
-		library.AbortWithStatusJSON(w, http.StatusInternalServerError, err)
+		response.AbortWithStatusJSON(w, http.StatusInternalServerError, err)
+		return
+	}
+
+	err = service.Login.VerifySingUp(apiReq)
+	if err != nil {
+		response.AbortWithStatusJSON(w, http.StatusInternalServerError, err)
 		return
 	}
 
@@ -29,5 +37,5 @@ func (l *loginAPI) SingUp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	library.Json(w, http.StatusOK, "ok")
+	response.Json(w, http.StatusOK, "ok")
 }

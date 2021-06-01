@@ -1,8 +1,10 @@
-package library
+package response
 
 import (
 	"encoding/json"
 	"net/http"
+
+	"github.com/li-zeyuan/micro/micro.common.api/errorenum"
 )
 
 type JsonResponse struct {
@@ -19,6 +21,11 @@ func AbortWithStatusJSON(w http.ResponseWriter, code int, err error) {
 	resp := JsonResponse{}
 	resp.Code = -1
 	resp.Msg = err.Error()
+	if errEnum, ok := err.(errorenum.ErrorCode); ok {
+		resp.Code = errEnum.Code
+		resp.Msg = errEnum.Msg
+	}
+
 	body, _ := json.Marshal(resp)
 	w.WriteHeader(code)
 	_, _ = w.Write(body)
