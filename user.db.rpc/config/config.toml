@@ -1,0 +1,12 @@
+[server]
+    service_name="user.db.rpc"
+    port = 7072
+    timeout = 5000
+
+[database]
+    name = "mciro_user_db"
+    dsn = "root:lzymysql@tcp(47.115.13.137:3433)/micro?charset=utf8mb4&parseTime=True&loc=Local"
+
+port = 3306
+    connection_max = 5000
+    timeout = 2000

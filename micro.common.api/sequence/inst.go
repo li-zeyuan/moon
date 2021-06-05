@@ -2,7 +2,7 @@ package sequence
 
 var seq *Sequence
 
-func init() {
+func Init() {
 	setting := Setting{
 		MachineID:      nil,
 		CheckMachineID: nil,

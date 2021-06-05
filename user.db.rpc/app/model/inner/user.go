@@ -1,4 +1,4 @@
-package internal
+package inner
 
 import (
 	"gorm.io/gorm"

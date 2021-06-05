@@ -12,6 +12,8 @@
 - 搭建http服务、rpc服务
 - 雪花算法生成分布式ID
 - 接入orm
+- 接入配置解析
+- 接入sql连接池
 - 接入日志服务
 - 接入content
 - 接入jwt
@@ -23,3 +25,5 @@
 
 ### 参考
 - grpc demo: https://grpc.io/docs/languages/go/quickstart/
+- 配置文件解析：https://github.com/BurntSushi/toml
+- gorm文档：https://gorm.io/docs/

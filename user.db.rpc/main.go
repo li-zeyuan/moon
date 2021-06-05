@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net"
+	"os"
 
 	"github.com/li-zeyuan/micro/micro.common.api/pb/profile"
 	"github.com/li-zeyuan/micro/user.db.rpc/app/service"
@@ -20,7 +21,8 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	boot.Init()
+	configPath, _ := os.Getwd()
+	boot.Init(configPath + "/user.db.rpc/config/config.toml")
 
 	s := grpc.NewServer()
 	profile.RegisterProfileServiceServer(s, &service.ProfileServer{})
