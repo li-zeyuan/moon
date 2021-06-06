@@ -13,6 +13,7 @@ import (
 
 func TestMockDao_Save(t *testing.T) {
 	config.InitConfig("/Users/lizeyuan/Desktop/LearnProject/src/github.com/li-zeyuan/micro/user.db.rpc/config/config.toml")
+	//config.InitConfig("/home/lizeyuan/LearnProject/src/github.com/li-zeyuan/micro/user.db.rpc/config/config.toml")
 	mockDao := NewMock()
 
 	batch := make([]*inner.MockModel, 0)
