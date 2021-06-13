@@ -3,8 +3,7 @@ package internal
 import (
 	"log"
 
-	internalmodel "github.com/li-zeyuan/micro/user.db.rpc/app/model/inner"
-	"github.com/li-zeyuan/micro/user.db.rpc/config"
+	"github.com/li-zeyuan/micro/user.db.rpc/app/model/inner"
 	"gorm.io/gorm"
 )
 
@@ -12,14 +11,14 @@ type MockDao struct {
 	db *gorm.DB
 }
 
-func NewMock() *MockDao {
+func NewMock(db *gorm.DB) *MockDao {
 	return &MockDao{
-		db: config.Db,
+		db: db,
 	}
 }
 
-func (d *MockDao) Save(models []*internalmodel.MockModel) error {
-	err := d.db.Table(internalmodel.TableNameMock).Create(models).Error
+func (d *MockDao) Save(models []*inner.MockModel) error {
+	err := d.db.Table(inner.TableNameMock).Create(models).Error
 	if err != nil {
 		log.Println("batch save error: ", err)
 		return err

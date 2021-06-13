@@ -1,11 +1,12 @@
 package boot
 
 import (
-	"github.com/li-zeyuan/micro/micro.common.api/sequence"
+	"os"
+
 	"github.com/li-zeyuan/micro/user.db.rpc/config"
 )
 
-func Init(configPath string) {
-	sequence.Init()
+func init() {
+	configPath := os.Getenv(config.ServerConfigPathEvnKey)
 	config.InitConfig(configPath)
 }

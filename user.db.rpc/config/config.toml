@@ -6,7 +6,7 @@
 [database]
     name = "mciro_user_db"
     dsn = "root:lzymysql@tcp(47.115.13.137:3433)/micro?charset=utf8mb4&parseTime=True&loc=Local"
-
-port = 3306
-    connection_max = 5000
+    port = 3306
+    max_conn = 100
+    max_open = 10
     timeout = 2000

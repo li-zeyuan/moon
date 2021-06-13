@@ -8,13 +8,12 @@ import (
 	"time"
 
 	"github.com/li-zeyuan/micro/user.db.rpc/app/model/inner"
-	"github.com/li-zeyuan/micro/user.db.rpc/config"
+	"github.com/li-zeyuan/micro/user.db.rpc/boot"
 )
 
 func TestMockDao_Save(t *testing.T) {
-	config.InitConfig("/Users/lizeyuan/Desktop/LearnProject/src/github.com/li-zeyuan/micro/user.db.rpc/config/config.toml")
-	//config.InitConfig("/home/lizeyuan/LearnProject/src/github.com/li-zeyuan/micro/user.db.rpc/config/config.toml")
-	mockDao := NewMock()
+	infra := boot.NewInfra("")
+	mockDao := NewMock(infra.DB)
 
 	batch := make([]*inner.MockModel, 0)
 	for i := 0; i < 10000000; i++ {

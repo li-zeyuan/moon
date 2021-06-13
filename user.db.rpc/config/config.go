@@ -2,18 +2,20 @@ package config
 
 import (
 	"github.com/BurntSushi/toml"
-	"gorm.io/driver/mysql"
-	"gorm.io/gorm"
 )
+
+const ServerConfigPathEvnKey = "user_db_rpc_config_path"
 
 var (
 	Conf Config
-	Db   *gorm.DB
 )
 
 type database struct {
-	Name string
-	DSN  string
+	Name    string `toml:"name"`
+	DSN     string `toml:"dsn"`
+	MaxConn int    `toml:"max_conn"`
+	MaxOpen int    `toml:"max_open"`
+	Timeout int64  `toml:"timeout"`
 }
 
 type server struct {
@@ -29,10 +31,6 @@ type Config struct {
 
 func InitConfig(path string) {
 	_, err := toml.DecodeFile(path, &Conf)
-	if err != nil {
-		panic(err)
-	}
-	Db, err = gorm.Open(mysql.Open(Conf.DB.DSN), &gorm.Config{})
 	if err != nil {
 		panic(err)
 	}
