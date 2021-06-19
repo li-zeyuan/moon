@@ -1,12 +1,14 @@
 package api
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/li-zeyuan/micro/user.logic.http/app/model"
 	"github.com/li-zeyuan/micro/user.logic.http/app/service"
 	"github.com/li-zeyuan/micro/user.logic.http/library/request"
 	"github.com/li-zeyuan/micro/user.logic.http/library/response"
+	"github.com/li-zeyuan/micro/user.logic.http/middleware"
 )
 
 var Login = new(loginAPI)
@@ -14,6 +16,8 @@ var Login = new(loginAPI)
 type loginAPI struct{}
 
 func (l *loginAPI) SingUp(w http.ResponseWriter, r *http.Request) {
+	infra := middleware.GetInfra(r.Context())
+	log.Println(infra.RequestId)
 	apiReq := new(model.LoginApiSingUpReq)
 	err := request.ParseBody(r, apiReq)
 	if err != nil {

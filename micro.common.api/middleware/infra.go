@@ -1,3 +1,6 @@
 package middleware
 
-const InfraKey = "infra"
+const (
+	InfraKey = "infra"
+	RequestId = "request_id"
+)
