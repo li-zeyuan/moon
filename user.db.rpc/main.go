@@ -1,10 +1,11 @@
 package main
 
 import (
+	"github.com/li-zeyuan/micro/user.db.rpc/pb/profile"
 	"log"
 	"net"
 
-	"github.com/li-zeyuan/micro/micro.common.api/pb/profile"
+	"github.com/grpc-ecosystem/go-grpc-middleware"
 	"github.com/li-zeyuan/micro/user.db.rpc/app/service"
 	_ "github.com/li-zeyuan/micro/user.db.rpc/boot"
 	"google.golang.org/grpc"
@@ -20,7 +21,12 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	s := grpc.NewServer()
+	s := grpc.NewServer(
+		grpc.StreamInterceptor(grpc_middleware.ChainStreamServer(
+			//interceptor.StreamServerInfraInterceptor(),
+		)),
+	)
+
 	profile.RegisterProfileServiceServer(s, &service.ProfileServer{})
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)

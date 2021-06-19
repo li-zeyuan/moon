@@ -3,9 +3,6 @@ package api
 import (
 	"net/http"
 
-	"github.com/li-zeyuan/micro/micro.common.api/model/rpc"
-	"github.com/li-zeyuan/micro/micro.common.api/pb/profile"
-	"github.com/li-zeyuan/micro/micro.common.api/utils"
 	"github.com/li-zeyuan/micro/user.logic.http/app/model"
 	"github.com/li-zeyuan/micro/user.logic.http/app/service"
 	"github.com/li-zeyuan/micro/user.logic.http/library/request"
@@ -30,12 +27,12 @@ func (l *loginAPI) SingUp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	profileRpcReq := profile.UpsertReq{}
-	profileRpcResp := profile.UpsertResp{}
-	err = utils.Invoke(r.Context(), rpc.AddressProfileServer, rpc.UrlProfileUpsert, &profileRpcReq, &profileRpcResp)
-	if err != nil {
-		return
-	}
+	//profileRpcReq := profile.UpsertReq{}
+	//profileRpcResp := profile.UpsertResp{}
+	//err = utils.Invoke(r.Context(), rpc.AddressProfileServer, rpc.UrlProfileUpsert, &profileRpcReq, &profileRpcResp)
+	//if err != nil {
+	//	return
+	//}
 
 	response.Json(w, http.StatusOK, "ok")
 }

@@ -1,6 +1,7 @@
 package sequence
 
 import (
+	"fmt"
 	"log"
 	"testing"
 	"time"
@@ -69,4 +70,8 @@ func BenchmarkSequence_NextIDParallel(b *testing.B) {
 			_ = NewID()
 		}
 	})
+}
+
+func TestGetDbTbName(t *testing.T) {
+	fmt.Println(100290 % 1000)
 }

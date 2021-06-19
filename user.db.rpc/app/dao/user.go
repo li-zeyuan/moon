@@ -1,4 +1,4 @@
-package internal
+package dao
 
 import (
 	"log"
@@ -17,7 +17,11 @@ func NewUser(db *gorm.DB) *UserDao {
 	}
 }
 
-func (d *UserDao) Save(models []*inner.UserModel) error {
+func (d *UserDao) Save(models []*inner.UserProfileModel) error {
+	if len(models) == 0 {
+		return nil
+	}
+
 	err := d.db.Table(inner.UserModelTableName).Create(&models).Error
 	if err != nil {
 		log.Println("create users error: ", err)
@@ -26,7 +30,7 @@ func (d *UserDao) Save(models []*inner.UserModel) error {
 	return nil
 }
 
-func (d *UserDao) FindOne() (*inner.UserModel, error) {
+func (d *UserDao) FindOne() (*inner.UserProfileModel, error) {
 
 	return nil, nil
 }
