@@ -13,12 +13,12 @@ func Invoke(ctx context.Context, address, url string, in, out interface{}, opts 
 		defer conn.Close()
 	}
 	if err != nil {
-		log.Fatalf("did not connect: %v", err)
+		log.Printf("did not connect: %v", err)
 	}
 
 	err = conn.Invoke(ctx, url, in, out, opts...)
 	if err != nil {
-		log.Fatalf("grpc invoke url: %s, error: %v", url, err)
+		log.Printf("grpc invoke url: %s, error: %v", url, err)
 		return err
 	}
 

@@ -25,6 +25,6 @@ var (
 var (
 	ErrorPassportLength        = ErrorCode{Code: 200, Msg: "账号长度超过限制"}
 	ErrorPassportLetterOrDigit = ErrorCode{Code: 201, Msg: "账号只能是数字或字母"}
-	ErrorPasswordLength        = ErrorCode{Code: 202, Msg: "密码输入不正确"}
+	ErrorPasswordLength        = ErrorCode{Code: 202, Msg: "两次输入密码输入不一致"}
 	ErrorPasswordLetterOrDigit = ErrorCode{Code: 203, Msg: "密码只能是数字或字母"}
 )

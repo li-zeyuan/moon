@@ -4,10 +4,9 @@ import (
 	"context"
 	"github.com/li-zeyuan/micro/user.db.rpc/app/dao"
 	"github.com/li-zeyuan/micro/user.db.rpc/app/model/inner"
-	"github.com/li-zeyuan/micro/user.db.rpc/boot"
+	"github.com/li-zeyuan/micro/user.db.rpc/interceptor"
 	"github.com/li-zeyuan/micro/user.db.rpc/pb/profile"
 	"log"
-
 )
 
 type ProfileServer struct {
@@ -15,7 +14,8 @@ type ProfileServer struct {
 }
 
 func (s *ProfileServer) Save(ctx context.Context, in *profile.SaveReq) (*profile.SaveResp, error) {
-	infra := boot.GetInfra(ctx)
+	// todo
+	infra := interceptor.GetInfra(ctx)
 
 	profiles :=  make([]*inner.UserProfileModel, 0)
 	for _, pf := range in.Profiles {

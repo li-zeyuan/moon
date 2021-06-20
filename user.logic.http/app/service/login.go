@@ -1,6 +1,10 @@
 package service
 
 import (
+	"context"
+	"github.com/li-zeyuan/micro/micro.common.api/sequence"
+	userdbrpc "github.com/li-zeyuan/micro/micro.common.api/server/user.db.rpc"
+	"github.com/li-zeyuan/micro/micro.common.api/utils"
 	"regexp"
 
 	"github.com/li-zeyuan/micro/micro.common.api/errorenum"
@@ -12,17 +16,14 @@ var Login = loginService{}
 type loginService struct{}
 
 func (l *loginService) VerifySingUp(req *model.LoginApiSingUpReq) error {
-	if len(req.Passport) > 8 || len(req.Passport) == 0 {
-		return errorenum.ErrorPassportLength
-	}
-	if isLetterOrDigit, _ := regexp.MatchString(`^[A-Za-z0-9]$`, req.Passport); !isLetterOrDigit {
+	if isLetterOrDigit, _ := regexp.MatchString(`^[A-Za-z0-9]{1,16}$`, req.Passport); !isLetterOrDigit {
 		return errorenum.ErrorPassportLetterOrDigit
 	}
 
 	if len(req.Password) > 8 || len(req.Password) == 0 || req.Password != req.Password2 {
 		return errorenum.ErrorPasswordLength
 	}
-	if isLetterOrDigit, _ := regexp.MatchString(`^[A-Za-z0-9]$`, req.Password); !isLetterOrDigit {
+	if isLetterOrDigit, _ := regexp.MatchString(`^[A-Za-z0-9]{1,16}$`, req.Password); !isLetterOrDigit {
 		return errorenum.ErrorPasswordLetterOrDigit
 	}
 
@@ -31,6 +32,20 @@ func (l *loginService) VerifySingUp(req *model.LoginApiSingUpReq) error {
 	return nil
 }
 
-func (l *loginService) SingUp() error {
+func (l *loginService) SingUp(ctx context.Context, req *model.LoginApiSingUpReq) error {
+	pf := new(userdbrpc.Profile)
+	pf.Uid = sequence.NewID()
+	pf.Name = req.Name
+	pf.Passport = req.Passport
+	pf.Password = req.Password
+
+	profileRpcReq := userdbrpc.SaveReq{}
+	profileRpcReq.Profiles = append(profileRpcReq.Profiles, pf)
+	profileRpcResp := userdbrpc.SaveResp{}
+	err := utils.Invoke(ctx, userdbrpc.AddressProfileServer, userdbrpc.UrlProfileSave, &profileRpcReq, &profileRpcResp)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

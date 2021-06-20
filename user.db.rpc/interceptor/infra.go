@@ -14,7 +14,8 @@ import (
 type Infra struct {
 	//Client *redis.Client
 	DB      *gorm.DB
-	Context context.Context
+	//Context context.Context
+	RequestId  string
 }
 
 func GetInfra(c context.Context) *Infra {
@@ -34,6 +35,7 @@ func GetInfra(c context.Context) *Infra {
 
 func NewInfra(requestID string) *Infra {
 	infra := new(Infra)
+	infra.RequestId = requestID
 	infra.DB = config.InitDatabase(&config.Conf)
 	return infra
 }

@@ -21,22 +21,21 @@ func (l *loginAPI) SingUp(w http.ResponseWriter, r *http.Request) {
 	apiReq := new(model.LoginApiSingUpReq)
 	err := request.ParseBody(r, apiReq)
 	if err != nil {
-		response.AbortWithStatusJSON(w, http.StatusInternalServerError, err)
+		response.AbortWithStatusJSON(w, http.StatusOK, err)
 		return
 	}
 
 	err = service.Login.VerifySingUp(apiReq)
 	if err != nil {
-		response.AbortWithStatusJSON(w, http.StatusInternalServerError, err)
+		response.AbortWithStatusJSON(w, http.StatusOK, err)
 		return
 	}
 
-	//profileRpcReq := profile.UpsertReq{}
-	//profileRpcResp := profile.UpsertResp{}
-	//err = utils.Invoke(r.Context(), rpc.AddressProfileServer, rpc.UrlProfileUpsert, &profileRpcReq, &profileRpcResp)
-	//if err != nil {
-	//	return
-	//}
+	err = service.Login.SingUp(r.Context(), apiReq)
+	if err != nil {
+		response.AbortWithStatusJSON(w, http.StatusOK, err)
+		return
+	}
 
 	response.Json(w, http.StatusOK, "ok")
 }

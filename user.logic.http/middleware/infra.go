@@ -42,12 +42,10 @@ func InfraMiddleware(next http.Handler) http.Handler {
 		ctx := r.Context()
 		ctx = context.WithValue(ctx, middleware.InfraKey, infra)
 
-		// todo: 设置context到r.context
-		//r.WithContext(ctx)
+		// 设置context到r.context
+		r = r.WithContext(ctx)
 		r.Header.Set(middleware.RequestId, requestId)
 
 		next.ServeHTTP(w, r)
-		log.Println("MiddlerwareFirst - After Handler")
-
 	})
 }

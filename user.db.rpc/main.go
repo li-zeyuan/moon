@@ -27,6 +27,7 @@ func main() {
 		)),
 	)
 
+	log.Println("port: ", port)
 	profile.RegisterProfileServiceServer(s, &service.ProfileServer{})
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
