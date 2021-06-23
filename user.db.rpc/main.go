@@ -1,14 +1,14 @@
 package main
 
 import (
-	"github.com/li-zeyuan/micro/micro.common.api/server/user.db.rpc/pb/profile"
-	"github.com/li-zeyuan/micro/user.db.rpc/interceptor"
 	"log"
 	"net"
 
 	"github.com/grpc-ecosystem/go-grpc-middleware"
+	"github.com/li-zeyuan/micro/micro.common.api/server/user.db.rpc/pb/profile"
 	"github.com/li-zeyuan/micro/user.db.rpc/app/service"
 	_ "github.com/li-zeyuan/micro/user.db.rpc/boot"
+	"github.com/li-zeyuan/micro/user.db.rpc/interceptor"
 	"google.golang.org/grpc"
 )
 

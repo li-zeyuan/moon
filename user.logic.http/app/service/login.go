@@ -2,13 +2,13 @@ package service
 
 import (
 	"context"
+	"regexp"
+
+	"github.com/li-zeyuan/micro/micro.common.api/errorenum"
 	"github.com/li-zeyuan/micro/micro.common.api/sequence"
 	userdbrpc "github.com/li-zeyuan/micro/micro.common.api/server/user.db.rpc"
 	"github.com/li-zeyuan/micro/micro.common.api/server/user.db.rpc/pb/profile"
 	"github.com/li-zeyuan/micro/micro.common.api/utils"
-	"regexp"
-
-	"github.com/li-zeyuan/micro/micro.common.api/errorenum"
 	"github.com/li-zeyuan/micro/user.logic.http/app/model"
 )
 
