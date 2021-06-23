@@ -6,9 +6,9 @@ import (
 
 	"github.com/li-zeyuan/micro/user.logic.http/app/model"
 	"github.com/li-zeyuan/micro/user.logic.http/app/service"
+	"github.com/li-zeyuan/micro/user.logic.http/library/middleware"
 	"github.com/li-zeyuan/micro/user.logic.http/library/request"
 	"github.com/li-zeyuan/micro/user.logic.http/library/response"
-	"github.com/li-zeyuan/micro/user.logic.http/middleware"
 )
 
 var Login = new(loginAPI)
@@ -17,7 +17,8 @@ type loginAPI struct{}
 
 func (l *loginAPI) SingUp(w http.ResponseWriter, r *http.Request) {
 	infra := middleware.GetInfra(r.Context())
-	log.Println(infra.RequestId)
+	log.Println(infra)
+
 	apiReq := new(model.LoginApiSingUpReq)
 	err := request.ParseBody(r, apiReq)
 	if err != nil {
@@ -37,5 +38,5 @@ func (l *loginAPI) SingUp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response.Json(w, http.StatusOK, "ok")
+	response.Json(w, http.StatusOK, nil)
 }

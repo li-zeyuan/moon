@@ -4,13 +4,15 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/li-zeyuan/micro/micro.common.api/middleware"
 	"github.com/li-zeyuan/micro/user.logic.http/app/api"
-	"github.com/li-zeyuan/micro/user.logic.http/middleware"
+	middleware2 "github.com/li-zeyuan/micro/user.logic.http/library/middleware"
 )
 
 func Init(srv *http.ServeMux) {
 	r := NewRouter()
-	r.Use(middleware.InfraMiddleware)
+	r.Use(middleware.RequestIdMiddleware)
+	r.Use(middleware2.InfraMiddleware)
 	r.Add("/api/login/sing_up", http.HandlerFunc(api.Login.SingUp))
 
 	for url, handler := range r.mux {

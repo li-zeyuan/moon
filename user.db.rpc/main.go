@@ -1,7 +1,8 @@
 package main
 
 import (
-	"github.com/li-zeyuan/micro/user.db.rpc/pb/profile"
+	"github.com/li-zeyuan/micro/micro.common.api/server/user.db.rpc/pb/profile"
+	"github.com/li-zeyuan/micro/user.db.rpc/interceptor"
 	"log"
 	"net"
 
@@ -22,8 +23,9 @@ func main() {
 	}
 
 	s := grpc.NewServer(
-		grpc.StreamInterceptor(grpc_middleware.ChainStreamServer(
-			//interceptor.StreamServerInfraInterceptor(),
+		grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(
+			interceptor.InfraUnaryServerInterceptor(),
+			interceptor.RequestIDUnaryServerInterceptor(),
 		)),
 	)
 

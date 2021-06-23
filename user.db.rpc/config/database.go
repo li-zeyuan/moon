@@ -7,7 +7,13 @@ import (
 	"gorm.io/gorm"
 )
 
+var Db *gorm.DB
+
 func InitDatabase(conf *Config) *gorm.DB {
+	if Db != nil {
+		return Db
+	}
+
 	db, err := gorm.Open(mysql.Open(conf.DB.DSN), &gorm.Config{})
 	if err != nil {
 		panic(err)

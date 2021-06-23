@@ -27,3 +27,4 @@
 - grpc demo: https://grpc.io/docs/languages/go/quickstart/
 - 配置文件解析：https://github.com/BurntSushi/toml
 - gorm文档：https://gorm.io/docs/
+- 链路追踪服务：https://zipkin.io/

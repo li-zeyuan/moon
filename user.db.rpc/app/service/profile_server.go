@@ -2,19 +2,18 @@ package service
 
 import (
 	"context"
+	profile2 "github.com/li-zeyuan/micro/micro.common.api/server/user.db.rpc/pb/profile"
 	"github.com/li-zeyuan/micro/user.db.rpc/app/dao"
 	"github.com/li-zeyuan/micro/user.db.rpc/app/model/inner"
 	"github.com/li-zeyuan/micro/user.db.rpc/interceptor"
-	"github.com/li-zeyuan/micro/user.db.rpc/pb/profile"
 	"log"
 )
 
 type ProfileServer struct {
-	profile.UnimplementedProfileServiceServer
+	profile2.UnimplementedProfileServiceServer
 }
 
-func (s *ProfileServer) Save(ctx context.Context, in *profile.SaveReq) (*profile.SaveResp, error) {
-	// todo
+func (s *ProfileServer) Save(ctx context.Context, in *profile2.SaveReq) (*profile2.SaveResp, error) {
 	infra := interceptor.GetInfra(ctx)
 
 	profiles :=  make([]*inner.UserProfileModel, 0)
@@ -30,13 +29,13 @@ func (s *ProfileServer) Save(ctx context.Context, in *profile.SaveReq) (*profile
 	userDao := dao.NewUser(infra.DB)
 	err:= userDao.Save(profiles)
 	if err != nil {
-		return &profile.SaveResp{DmError: -1, ErrorMsg: err.Error()}, err
+		return &profile2.SaveResp{DmError: -1, ErrorMsg: err.Error()}, err
 	}
 
-	return &profile.SaveResp{}, nil
+	return &profile2.SaveResp{}, nil
 }
 
-func (s *ProfileServer) Upsert(ctx context.Context, in *profile.UpdateReq) (*profile.UpdateResp, error) {
+func (s *ProfileServer) Upsert(ctx context.Context, in *profile2.UpdateReq) (*profile2.UpdateResp, error) {
 	log.Printf("Received: %v", in.GetProfiles())
-	return &profile.UpdateResp{}, nil
+	return &profile2.UpdateResp{}, nil
 }

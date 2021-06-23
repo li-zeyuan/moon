@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/li-zeyuan/micro/micro.common.api/sequence"
 	userdbrpc "github.com/li-zeyuan/micro/micro.common.api/server/user.db.rpc"
+	"github.com/li-zeyuan/micro/micro.common.api/server/user.db.rpc/pb/profile"
 	"github.com/li-zeyuan/micro/micro.common.api/utils"
 	"regexp"
 
@@ -33,15 +34,15 @@ func (l *loginService) VerifySingUp(req *model.LoginApiSingUpReq) error {
 }
 
 func (l *loginService) SingUp(ctx context.Context, req *model.LoginApiSingUpReq) error {
-	pf := new(userdbrpc.Profile)
+	pf := new(profile.Profile)
 	pf.Uid = sequence.NewID()
 	pf.Name = req.Name
 	pf.Passport = req.Passport
 	pf.Password = req.Password
 
-	profileRpcReq := userdbrpc.SaveReq{}
+	profileRpcReq := profile.SaveReq{}
 	profileRpcReq.Profiles = append(profileRpcReq.Profiles, pf)
-	profileRpcResp := userdbrpc.SaveResp{}
+	profileRpcResp := profile.SaveResp{}
 	err := utils.Invoke(ctx, userdbrpc.AddressProfileServer, userdbrpc.UrlProfileSave, &profileRpcReq, &profileRpcResp)
 	if err != nil {
 		return err

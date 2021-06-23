@@ -11,7 +11,6 @@ import (
 type Infra struct {
 	//Client *redis.Client
 	//Context context.Context
-	RequestId string
 }
 
 func GetInfra(c context.Context) *Infra {
@@ -31,7 +30,6 @@ func GetInfra(c context.Context) *Infra {
 
 func NewInfra(requestID string) *Infra {
 	return &Infra{
-		RequestId: requestID,
 	}
 }
 
@@ -41,11 +39,11 @@ func InfraMiddleware(next http.Handler) http.Handler {
 		infra := NewInfra(requestId)
 		ctx := r.Context()
 		ctx = context.WithValue(ctx, middleware.InfraKey, infra)
-
 		// 设置context到r.context
 		r = r.WithContext(ctx)
-		r.Header.Set(middleware.RequestId, requestId)
 
 		next.ServeHTTP(w, r)
 	})
 }
+
+

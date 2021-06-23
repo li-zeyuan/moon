@@ -25,6 +25,7 @@ func (d *UserDao) Save(models []*inner.UserProfileModel) error {
 	err := d.db.Table(inner.UserModelTableName).Create(&models).Error
 	if err != nil {
 		log.Println("create users error: ", err)
+		return err
 	}
 
 	return nil
