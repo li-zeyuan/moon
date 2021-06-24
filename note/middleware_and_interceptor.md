@@ -2,10 +2,25 @@
 ## middleware
 - http服务中间件
 - 在请求处理业务handler前(后)，追加一些通用的逻辑处理
+
 ## interceptor
 - grpc服务拦截器
 - 类似与http服务中间件
 - 分UnaryInterceptor，StreamInterceptor
+
+## UnaryInterceptor
+- 客户端、服务端一元（单向调用）
+- 调用过程：
+    - 预处理(pre-processing)
+    - 调用RPC方法(invoking RPC method)
+    - 后处理(post-processing)
+
+## StreamInterceptor
+- 流拦截器，客户端、服务端双向调用
+- 调用过程：
+    - 1、预处理
+    - 2、调用SendMsg、RecvMsg
+    - 3、后处理
 
 ## 流程
 ```sequence

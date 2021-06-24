@@ -7,17 +7,15 @@ import (
 	"github.com/grpc-ecosystem/go-grpc-middleware"
 	"github.com/li-zeyuan/micro/micro.common.api/server/user.db.rpc/pb/profile"
 	"github.com/li-zeyuan/micro/user.db.rpc/app/service"
-	_ "github.com/li-zeyuan/micro/user.db.rpc/boot"
+	"github.com/li-zeyuan/micro/user.db.rpc/boot"
+	"github.com/li-zeyuan/micro/user.db.rpc/config"
 	"github.com/li-zeyuan/micro/user.db.rpc/interceptor"
 	"google.golang.org/grpc"
 )
 
-const (
-	port = ":7072"
-)
-
 func main() {
-	lis, err := net.Listen("tcp", port)
+	boot.Init()
+	lis, err := net.Listen("tcp", ":"+config.Conf.Server.Port)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
@@ -29,7 +27,7 @@ func main() {
 		)),
 	)
 
-	log.Println("port: ", port)
+	log.Printf("server: %s, port: %s", config.Conf.Server.ServiceName, config.Conf.Server.Port)
 	profile.RegisterProfileServiceServer(s, &service.ProfileServer{})
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)

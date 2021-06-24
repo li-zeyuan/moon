@@ -1,0 +1,4 @@
+[server]
+    service_name="user.logic.http"
+    port = "7070"
+    timeout = 5000

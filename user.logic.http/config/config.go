@@ -4,19 +4,11 @@ import (
 	"github.com/BurntSushi/toml"
 )
 
-const ServerConfigPathEvnKey = "user_db_rpc_config_path"
+const ServerConfigPathEvnKey = "user_logic_http_config_path"
 
 var (
 	Conf Config
 )
-
-type database struct {
-	Name    string `toml:"name"`
-	DSN     string `toml:"dsn"`
-	MaxConn int    `toml:"max_conn"`
-	MaxOpen int    `toml:"max_open"`
-	Timeout int64  `toml:"timeout"`
-}
 
 type server struct {
 	ServiceName string `toml:"service_name"`
@@ -25,8 +17,7 @@ type server struct {
 }
 
 type Config struct {
-	DB     database `toml:"database"`
-	Server server   `toml:"server"`
+	Server server `toml:"server"`
 }
 
 func InitConfig(path string) {

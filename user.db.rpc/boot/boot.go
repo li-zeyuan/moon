@@ -6,7 +6,7 @@ import (
 	"github.com/li-zeyuan/micro/user.db.rpc/config"
 )
 
-func init() {
+func Init() {
 	configPath := os.Getenv(config.ServerConfigPathEvnKey)
 	config.InitConfig(configPath)
 }

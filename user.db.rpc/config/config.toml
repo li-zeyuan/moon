@@ -1,6 +1,6 @@
 [server]
     service_name="user.db.rpc"
-    port = 7072
+    port = "7071"
     timeout = 5000
 
 [database]
