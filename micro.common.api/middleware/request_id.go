@@ -23,7 +23,7 @@ func RequestIdMiddleware(next http.Handler) http.Handler {
 
 		// 设置context到r.context
 		r = r.WithContext(ctx)
-		r.Header.Set(RequestId, requestId)
+		w.Header().Add(RequestId, requestId)
 
 		next.ServeHTTP(w, r)
 	})

@@ -10,6 +10,7 @@ import (
 	"github.com/li-zeyuan/micro/micro.common.api/server/user.db.rpc/pb/profile"
 	"github.com/li-zeyuan/micro/micro.common.api/utils"
 	"github.com/li-zeyuan/micro/user.logic.http/app/model"
+	"github.com/li-zeyuan/micro/user.logic.http/config"
 )
 
 var Login = loginService{}
@@ -43,7 +44,7 @@ func (l *loginService) SingUp(ctx context.Context, req *model.LoginApiSingUpReq)
 	profileRpcReq := profile.SaveReq{}
 	profileRpcReq.Profiles = append(profileRpcReq.Profiles, pf)
 	profileRpcResp := profile.SaveResp{}
-	err := utils.Invoke(ctx, userdbrpc.AddressProfileServer, userdbrpc.UrlProfileSave, &profileRpcReq, &profileRpcResp)
+	err := utils.Invoke(ctx, config.GetServerClient(userdbrpc.ServerNameUserDbRpc).Address, userdbrpc.UrlProfileSave, &profileRpcReq, &profileRpcResp)
 	if err != nil {
 		return err
 	}

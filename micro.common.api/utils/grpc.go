@@ -2,11 +2,11 @@ package utils
 
 import (
 	"context"
-	"github.com/li-zeyuan/micro/micro.common.api/middleware"
-	"google.golang.org/grpc/metadata"
 	"log"
 
+	"github.com/li-zeyuan/micro/micro.common.api/middleware"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
 )
 
 func Invoke(ctx context.Context, address, url string, in, out interface{}, opts ...grpc.CallOption) error {

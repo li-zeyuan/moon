@@ -16,8 +16,14 @@ type server struct {
 	Timeout     int
 }
 
+type serverClient struct {
+	ServiceName string `toml:"service_name"`
+	Address     string `toml:"address"`
+}
+
 type Config struct {
-	Server server `toml:"server"`
+	Server       server         `toml:"server"`
+	ServerClient []serverClient `toml:"server_client"`
 }
 
 func InitConfig(path string) {
@@ -25,4 +31,14 @@ func InitConfig(path string) {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func GetServerClient(sClientName string) serverClient {
+	for _, c := range Conf.ServerClient {
+		if c.ServiceName == sClientName {
+			return c
+		}
+	}
+
+	return serverClient{}
 }
