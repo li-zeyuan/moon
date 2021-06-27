@@ -1,7 +1,6 @@
 package api
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/li-zeyuan/micro/user.logic.http/app/model"
@@ -17,7 +16,7 @@ type loginAPI struct{}
 
 func (l *loginAPI) SingUp(w http.ResponseWriter, r *http.Request) {
 	infra := middleware.GetInfra(r.Context())
-	log.Println(infra)
+	infra.Log.Infof("lizeyuan")
 
 	apiReq := new(model.LoginApiSingUpReq)
 	err := request.ParseBody(r, apiReq)

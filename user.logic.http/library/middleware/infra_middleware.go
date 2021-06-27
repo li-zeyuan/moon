@@ -2,13 +2,16 @@ package middleware
 
 import (
 	"context"
-	"github.com/li-zeyuan/micro/micro.common.api/middleware"
-	"gopkg.in/mgo.v2/bson"
 	"log"
 	"net/http"
+
+	"github.com/li-zeyuan/micro/micro.common.api/logger"
+	"github.com/li-zeyuan/micro/micro.common.api/middleware"
+	"gopkg.in/mgo.v2/bson"
 )
 
 type Infra struct {
+	Log *logger.Logger
 	//Client *redis.Client
 	//Context context.Context
 }
@@ -30,6 +33,7 @@ func GetInfra(c context.Context) *Infra {
 
 func NewInfra(requestID string) *Infra {
 	return &Infra{
+		Log: logger.NewLogger(requestID),
 	}
 }
 
@@ -45,5 +49,3 @@ func InfraMiddleware(next http.Handler) http.Handler {
 		next.ServeHTTP(w, r)
 	})
 }
-
-
