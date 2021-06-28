@@ -13,7 +13,7 @@ const (
 )
 
 type BaseInfra struct {
-	RequestId string
+	RequestId string // 冗余
 	Log       *logger.Logger
 	Context   context.Context
 }

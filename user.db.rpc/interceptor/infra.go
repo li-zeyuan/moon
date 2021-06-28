@@ -2,7 +2,6 @@ package interceptor
 
 import (
 	"context"
-	"log"
 
 	"github.com/li-zeyuan/micro/micro.common.api/logger"
 	"github.com/li-zeyuan/micro/micro.common.api/middleware"
@@ -14,30 +13,29 @@ import (
 type Infra struct {
 	//Client *redis.Client
 	DB *gorm.DB
-	//Context context.Context
-	RequestId string
-	Log       *logger.Logger
+	*middleware.BaseInfra
 }
 
 func GetInfra(c context.Context) *Infra {
 	if c == nil {
-		log.Fatal("content is nil")
+		logger.DefaultLogger.Fatal("content is nil")
 		return nil
 	}
 
 	infra, ok := c.Value(middleware.InfraKey).(*Infra)
 	if !ok {
-		log.Println("can not transfer InfraKey")
-		return NewInfra()
+		logger.DefaultLogger.Warnf("can not transfer InfraKey")
+		return NewInfra(context.Background(), middleware.NewRequestId())
 	}
 
 	return infra
 }
 
-func NewInfra() *Infra {
-	infra := new(Infra)
-	infra.DB = config.InitDatabase(&config.Conf)
-	return infra
+func NewInfra(ctx context.Context, requestId string) *Infra {
+	return &Infra{
+		config.InitDatabase(&config.Conf),
+		middleware.NewBaseInfra(ctx, requestId),
+	}
 }
 
 func InfraUnaryServerInterceptor() grpc.UnaryServerInterceptor {
@@ -45,7 +43,9 @@ func InfraUnaryServerInterceptor() grpc.UnaryServerInterceptor {
 		ctx context.Context,
 		req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler,
 	) (resp interface{}, err error) {
-		ctx = context.WithValue(ctx, middleware.InfraKey, NewInfra())
+
+		reqId := middleware.GetRequestIdFromIncomingContext(ctx)
+		ctx = context.WithValue(ctx, middleware.InfraKey, NewInfra(ctx, reqId))
 		return handler(ctx, req)
 	}
 }

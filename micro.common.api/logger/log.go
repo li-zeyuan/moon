@@ -45,6 +45,9 @@ func NewLogger(requestId string) *Logger {
 }
 
 func (l *Logger) formalRequestId() string {
+	if len(l.RequestId) == 0 {
+		return ""
+	}
 	return fmt.Sprintf(" {request_id: %s}", l.RequestId)
 }
 

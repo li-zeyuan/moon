@@ -7,14 +7,16 @@ import (
 	"gorm.io/gorm"
 )
 
-var Db *gorm.DB
+var db *gorm.DB
 
+// InitDatabase gorm支持连接池
 func InitDatabase(conf *Config) *gorm.DB {
-	if Db != nil {
-		return Db
+	if db != nil {
+		return db
 	}
 
-	db, err := gorm.Open(mysql.Open(conf.DB.DSN), &gorm.Config{})
+	var err error
+	db, err = gorm.Open(mysql.Open(conf.DB.DSN), &gorm.Config{})
 	if err != nil {
 		panic(err)
 	}
