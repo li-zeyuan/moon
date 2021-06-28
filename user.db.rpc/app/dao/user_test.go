@@ -1,25 +1,38 @@
 package dao
 
 import (
+	"context"
 	"testing"
 
 	"github.com/li-zeyuan/micro/user.db.rpc/app/model/inner"
-	"github.com/li-zeyuan/micro/user.db.rpc/boot"
+	"github.com/li-zeyuan/micro/user.db.rpc/interceptor"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestUserDao_Save(t *testing.T) {
-	infra := boot.NewInfra("")
-	models := []*inner.UserModel{
-		&inner.UserModel{
-			Uid:       11,
+	infra := interceptor.NewInfra(context.Background(), "")
+	models := []*inner.UserProfileModel{
+		&inner.UserProfileModel{
+			Uid:      11,
 			Passport: "lizeyuan",
 			Password: "lizeyuan",
-			Nickname: "nick",
+			Name:     "nick",
 		},
 	}
 
 	userDao := NewUser(infra.DB)
-	err := userDao.Save(models)
+	err := userDao.Save(infra, models)
 	assert.Equal(t, err, nil)
+}
+
+func TestUserDao_Get(t *testing.T) {
+	infra := interceptor.NewInfra(context.Background(), "")
+	uids := []int64{
+		111,
+	}
+
+	userDao := NewUser(infra.DB)
+	userInfos, err := userDao.Get(infra, uids)
+	assert.Equal(t, err, nil)
+	t.Log(userInfos)
 }
