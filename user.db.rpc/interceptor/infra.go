@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 
+	"github.com/li-zeyuan/micro/micro.common.api/logger"
 	"github.com/li-zeyuan/micro/micro.common.api/middleware"
 	"github.com/li-zeyuan/micro/user.db.rpc/config"
 	"google.golang.org/grpc"
@@ -15,6 +16,7 @@ type Infra struct {
 	DB *gorm.DB
 	//Context context.Context
 	RequestId string
+	Log       *logger.Logger
 }
 
 func GetInfra(c context.Context) *Infra {

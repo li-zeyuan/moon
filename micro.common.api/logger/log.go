@@ -25,9 +25,15 @@ const (
 	prefixDebug = "[DEBUG] "
 )
 
+var DefaultLogger *Logger
+
 type Logger struct {
 	mLog      *log.Logger
 	RequestId string
+}
+
+func init() {
+	DefaultLogger = NewLogger("")
 }
 
 func NewLogger(requestId string) *Logger {

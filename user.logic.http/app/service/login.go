@@ -1,7 +1,6 @@
 package service
 
 import (
-	"context"
 	"regexp"
 
 	"github.com/li-zeyuan/micro/micro.common.api/errorenum"
@@ -11,6 +10,7 @@ import (
 	"github.com/li-zeyuan/micro/micro.common.api/utils"
 	"github.com/li-zeyuan/micro/user.logic.http/app/model"
 	"github.com/li-zeyuan/micro/user.logic.http/config"
+	"github.com/li-zeyuan/micro/user.logic.http/library/middleware"
 )
 
 var Login = loginService{}
@@ -34,7 +34,7 @@ func (l *loginService) VerifySingUp(req *model.LoginApiSingUpReq) error {
 	return nil
 }
 
-func (l *loginService) SingUp(ctx context.Context, req *model.LoginApiSingUpReq) error {
+func (l *loginService) SingUp(infra *middleware.Infra, req *model.LoginApiSingUpReq) error {
 	pf := new(profile.Profile)
 	pf.Uid = sequence.NewID()
 	pf.Name = req.Name
@@ -44,7 +44,7 @@ func (l *loginService) SingUp(ctx context.Context, req *model.LoginApiSingUpReq)
 	profileRpcReq := profile.SaveReq{}
 	profileRpcReq.Profiles = append(profileRpcReq.Profiles, pf)
 	profileRpcResp := profile.SaveResp{}
-	err := utils.Invoke(ctx, config.GetServerClient(userdbrpc.ServerNameUserDbRpc).Address, userdbrpc.UrlProfileSave, &profileRpcReq, &profileRpcResp)
+	err := utils.Invoke(infra.BaseInfra, config.GetServerClient(userdbrpc.ServerNameUserDbRpc).Address, userdbrpc.UrlProfileSave, &profileRpcReq, &profileRpcResp)
 	if err != nil {
 		return err
 	}

@@ -31,7 +31,7 @@ func (l *loginAPI) SingUp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = service.Login.SingUp(r.Context(), apiReq)
+	err = service.Login.SingUp(infra, apiReq)
 	if err != nil {
 		response.AbortWithStatusJSON(w, http.StatusOK, err)
 		return
