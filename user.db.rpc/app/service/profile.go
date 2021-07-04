@@ -63,6 +63,32 @@ func (s *ProfileServer) Get(ctx context.Context, in *profile.GetReq) (*profile.G
 	return &profile.GetResp{Data: data}, nil
 }
 
+func (s *ProfileServer) GetByPassport(ctx context.Context, in *profile.GetByPassportReq) (*profile.GetByPassportResp, error) {
+	infra := interceptor.GetInfra(ctx)
+	if len(in.Passports) == 0 {
+		return &profile.GetByPassportResp{DmError: int32(errorenum.ErrorInvalidArgument.Code), ErrorMsg: errorenum.ErrorInvalidArgument.Msg}, nil
+	}
+
+	userDao := dao.NewUser(infra.DB)
+	users, err := userDao.GetByPassport(infra, in.GetPassports())
+	if err != nil {
+		return &profile.GetByPassportResp{DmError: -1, ErrorMsg: err.Error()}, err
+	}
+
+	data := new(profile.GetRespList)
+	data.List = make([]*profile.Profile, 0)
+	for _, u := range users {
+		uInfo := new(profile.Profile)
+		uInfo.Uid = u.Uid
+		uInfo.Name = u.Name
+		uInfo.Passport = u.Passport
+		uInfo.Password = u.Password
+		data.List = append(data.List, uInfo)
+	}
+
+	return &profile.GetByPassportResp{Data: data}, nil
+}
+
 func (s *ProfileServer) Upsert(ctx context.Context, in *profile.UpdateReq) (*profile.UpdateResp, error) {
 	log.Printf("Received: %v", in.GetProfiles())
 	return &profile.UpdateResp{}, nil

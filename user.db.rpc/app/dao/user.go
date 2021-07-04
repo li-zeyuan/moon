@@ -47,3 +47,20 @@ func (d *UserDao) Get(infra *interceptor.Infra, uids []int64) ([]*inner.UserProf
 
 	return models, nil
 }
+
+func (d *UserDao) GetByPassport(infra *interceptor.Infra, passports []string) ([]*inner.UserProfileModel, error) {
+	if len(passports) == 0 {
+		return nil, nil
+	}
+
+	models := make([]*inner.UserProfileModel, 0)
+	err := d.db.Table(inner.UserModelTableName).
+		Where("passport in (?)", passports).
+		Find(&models).Error
+	if err != nil {
+		infra.Log.Error("get user by passport error: ", err)
+		return nil, err
+	}
+
+	return models, nil
+}

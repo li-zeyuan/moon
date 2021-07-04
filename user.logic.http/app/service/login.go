@@ -17,7 +17,7 @@ var Login = loginService{}
 
 type loginService struct{}
 
-func (l *loginService) VerifySingUp(req *model.LoginApiSingUpReq) error {
+func (l *loginService) VerifySingUp(infra *middleware.Infra, req *model.LoginApiSingUpReq) error {
 	if isLetterOrDigit, _ := regexp.MatchString(`^[A-Za-z0-9]{1,16}$`, req.Passport); !isLetterOrDigit {
 		return errorenum.ErrorPassportLetterOrDigit
 	}
@@ -29,7 +29,14 @@ func (l *loginService) VerifySingUp(req *model.LoginApiSingUpReq) error {
 		return errorenum.ErrorPasswordLetterOrDigit
 	}
 
-	// todo 判断账号是否存在
+	// 判断账号是否存在
+	profileMap, err := userdbrpc.GetProfileByPassport(infra.BaseInfra, []string{req.Passport})
+	if err != nil {
+		return err
+	}
+	if len(profileMap) > 0 {
+		return errorenum.ErrorPassportExist
+	}
 
 	return nil
 }

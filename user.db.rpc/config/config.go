@@ -1,6 +1,8 @@
 package config
 
 import (
+	"os"
+
 	"github.com/BurntSushi/toml"
 )
 
@@ -20,8 +22,8 @@ type database struct {
 
 type server struct {
 	ServiceName string `toml:"service_name"`
-	Port        string
-	Timeout     int
+	Port        string `toml:"port"`
+	Timeout     int    `toml:"timeout"`
 }
 
 type Config struct {
@@ -29,8 +31,9 @@ type Config struct {
 	Server server   `toml:"server"`
 }
 
-func InitConfig(path string) {
-	_, err := toml.DecodeFile(path, &Conf)
+func init() {
+	configPath := os.Getenv(ServerConfigPathEvnKey)
+	_, err := toml.DecodeFile(configPath, &Conf)
 	if err != nil {
 		panic(err)
 	}

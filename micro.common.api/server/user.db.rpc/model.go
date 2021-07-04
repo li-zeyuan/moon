@@ -2,5 +2,8 @@ package userdbrpc
 
 const (
 	ServerNameUserDbRpc = "user.db.rpc"
-	UrlProfileSave      = "/profile.ProfileService/Save"
+	userDbRpcAddress    = ":7071"
+
+	UrlProfileSave          = "/profile.ProfileService/Save"
+	UrlProfileGetByPassport = "/profile.ProfileService/GetByPassport"
 )

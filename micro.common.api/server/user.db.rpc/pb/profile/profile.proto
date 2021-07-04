@@ -45,6 +45,20 @@ message GetResp {
     GetRespList data = 3;
 }
 
+message GetByPassportReq {
+    repeated string passports = 1;
+}
+
+message GetByPassportRespList {
+    repeated Profile list = 1;
+}
+
+message GetByPassportResp {
+    int32 dm_error = 1;
+    string error_msg = 2;
+    GetRespList data = 3;
+}
+
 message DelRep {
     repeated int64 uids = 1;
 }
@@ -60,5 +74,6 @@ service ProfileService {
     rpc Update(UpdateReq)  returns(UpdateResp) {}
     rpc Del(DelRep)  returns(DelResp) {}
     rpc Get(GetReq)  returns(GetResp) {}
+    rpc GetByPassport(GetByPassportReq)  returns(GetByPassportResp) {}
 }
 

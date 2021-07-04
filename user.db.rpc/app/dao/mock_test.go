@@ -1,6 +1,7 @@
 package dao
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"math/rand"
@@ -8,11 +9,11 @@ import (
 	"time"
 
 	"github.com/li-zeyuan/micro/user.db.rpc/app/model/inner"
-	"github.com/li-zeyuan/micro/user.db.rpc/boot"
+	"github.com/li-zeyuan/micro/user.db.rpc/interceptor"
 )
 
 func TestMockDao_Save(t *testing.T) {
-	infra := boot.NewInfra("")
+	infra := interceptor.NewInfra(context.Background(), "")
 	mockDao := NewMock(infra.DB)
 
 	batch := make([]*inner.MockModel, 0)

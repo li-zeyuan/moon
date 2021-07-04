@@ -36,3 +36,15 @@ func TestUserDao_Get(t *testing.T) {
 	assert.Equal(t, err, nil)
 	t.Log(userInfos)
 }
+
+func TestUserDao_GetByPassport(t *testing.T) {
+	infra := interceptor.NewInfra(context.Background(), "")
+	passports := []string{
+		"lizeyuan",
+	}
+
+	userDao := NewUser(infra.DB)
+	userInfos, err := userDao.GetByPassport(infra, passports)
+	assert.Equal(t, err, nil)
+	t.Log(userInfos)
+}

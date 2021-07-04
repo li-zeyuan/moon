@@ -16,7 +16,6 @@ type loginAPI struct{}
 
 func (l *loginAPI) SingUp(w http.ResponseWriter, r *http.Request) {
 	infra := middleware.GetInfra(r.Context())
-	infra.Log.Infof("lizeyuan")
 
 	apiReq := new(model.LoginApiSingUpReq)
 	err := request.ParseBody(r, apiReq)
@@ -25,7 +24,7 @@ func (l *loginAPI) SingUp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = service.Login.VerifySingUp(apiReq)
+	err = service.Login.VerifySingUp(infra, apiReq)
 	if err != nil {
 		response.AbortWithStatusJSON(w, http.StatusOK, err)
 		return

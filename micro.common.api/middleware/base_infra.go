@@ -18,7 +18,7 @@ type BaseInfra struct {
 	Context   context.Context
 }
 
-func GetBaseInfra(c context.Context) *BaseInfra {
+func GetBaseInfra(c context.Context, reqId string) *BaseInfra {
 	if c == nil {
 		logger.DefaultLogger.Fatal("content is nil")
 		return nil
@@ -27,7 +27,7 @@ func GetBaseInfra(c context.Context) *BaseInfra {
 	infra, ok := c.Value(InfraKey).(*BaseInfra)
 	if !ok {
 		logger.DefaultLogger.Warnf("can not transfer InfraKey")
-		return NewBaseInfra(context.Background(), bson.NewObjectId().Hex())
+		return NewBaseInfra(context.Background(), reqId)
 	}
 
 	return infra
