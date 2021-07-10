@@ -48,3 +48,11 @@ func TestUserDao_GetByPassport(t *testing.T) {
 	assert.Equal(t, err, nil)
 	t.Log(userInfos)
 }
+
+func TestUserDao_GetColumnTypes(t *testing.T) {
+	infra := interceptor.NewInfra(context.Background(), "")
+
+	userDao := NewUser(infra.DB)
+	userInfos := userDao.GetColumnTypes()
+	t.Log(userInfos)
+}
