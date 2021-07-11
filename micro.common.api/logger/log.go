@@ -63,59 +63,59 @@ func (l *Logger) Debug(v ...interface{}) {
 
 func (l *Logger) Info(v ...interface{}) {
 	l.mLog.SetPrefix(green(prefixInfo))
-	l.output(2, fmt.Sprint(v...))
+	l.output(3, fmt.Sprint(v...))
 }
 
 func (l *Logger) Warn(v ...interface{}) {
 	l.mLog.SetPrefix(yellow(prefixWarn))
-	l.output(2, fmt.Sprint(v...))
+	l.output(3, fmt.Sprint(v...))
 }
 
 func (l *Logger) Error(v ...interface{}) {
 	l.mLog.SetPrefix(red(PrefixError))
-	l.output(2, fmt.Sprint(v...))
+	l.output(3, fmt.Sprint(v...))
 }
 
 func (l *Logger) Fatal(v ...interface{}) {
 	l.mLog.SetPrefix(magenta(prefixFatal))
-	l.output(2, fmt.Sprint(v...))
+	l.output(3, fmt.Sprint(v...))
 	os.Exit(1)
 }
 
 func (l *Logger) Panic(v ...interface{}) {
 	l.mLog.SetPrefix(red(prefixPanic))
-	l.output(2, fmt.Sprint(v...))
+	l.output(3, fmt.Sprint(v...))
 	panic(v)
 }
 
 func (l *Logger) Debugf(format string, v ...interface{}) {
 	l.mLog.SetPrefix(blue(prefixDebug))
-	l.output(2, fmt.Sprintf(format, v...))
+	l.output(3, fmt.Sprintf(format, v...))
 }
 
 func (l *Logger) Infof(format string, v ...interface{}) {
 	l.mLog.SetPrefix(green(prefixInfo))
-	l.output(2, fmt.Sprintf(format, v...))
+	l.output(3, fmt.Sprintf(format, v...))
 }
 
 func (l *Logger) Warnf(format string, v ...interface{}) {
 	l.mLog.SetPrefix(yellow(prefixWarn))
-	l.output(2, fmt.Sprintf(format, v...))
+	l.output(3, fmt.Sprintf(format, v...))
 }
 
 func (l *Logger) Errorf(format string, v ...interface{}) {
 	l.mLog.SetPrefix(red(PrefixError))
-	l.output(2, fmt.Sprintf(format, v...))
+	l.output(3, fmt.Sprintf(format, v...))
 }
 
 func (l *Logger) Fatalf(format string, v ...interface{}) {
 	l.mLog.SetPrefix(magenta(prefixFatal))
-	l.output(2, fmt.Sprintf(format, v...))
+	l.output(3, fmt.Sprintf(format, v...))
 	os.Exit(1)
 }
 
 func (l *Logger) Panicf(format string, v ...interface{}) {
 	l.mLog.SetPrefix(red(prefixPanic))
-	l.output(2, fmt.Sprintf(format, v...))
+	l.output(3, fmt.Sprintf(format, v...))
 	panic(v)
 }
