@@ -1,0 +1,8 @@
+[server]
+    service_name="family.graph.http"
+    port = "7072"
+    timeout = 5000
+
+[[server_client]]
+    service_name="user.db.rpc"
+    address="localhost:7071"

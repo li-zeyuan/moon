@@ -5,7 +5,6 @@ import (
 	"github.com/li-zeyuan/micro/user.db.rpc/app/model/inner"
 	"github.com/li-zeyuan/micro/user.db.rpc/interceptor"
 	"gorm.io/gorm"
-	"reflect"
 )
 
 type UserDao struct {
@@ -69,9 +68,6 @@ func (d *UserDao) GetByPassport(infra *interceptor.Infra, passports []string) ([
 
 func (d *UserDao) GetColumnTypes(i interface{}) []string {
 	//d.db.AutoMigrate(&inner.UserProfileModel{})
-
-	rt := reflect.TypeOf(i).FieldByNameFunc()
-
 	result, _ := d.db.Debug().Migrator().ColumnTypes(&inner.UserProfileModel{Uid: 1})
 	for _, v := range result {
 		fmt.Println(v.Name())
