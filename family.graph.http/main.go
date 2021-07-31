@@ -2,14 +2,14 @@ package main
 
 import (
 	"context"
-	"github.com/li-zeyuan/micro/family.graph.http/config"
-	"github.com/li-zeyuan/micro/family.graph.http/router"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 
 	"github.com/li-zeyuan/micro/family.graph.http/boot"
+	"github.com/li-zeyuan/micro/family.graph.http/config"
+	"github.com/li-zeyuan/micro/family.graph.http/router"
 	"github.com/li-zeyuan/micro/micro.common.api/logger"
 )
 

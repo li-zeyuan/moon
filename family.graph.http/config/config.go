@@ -4,7 +4,7 @@ import (
 	"github.com/BurntSushi/toml"
 )
 
-const ServerConfigPathEvnKey = "user_logic_http_config_path"
+const ServerConfigPathEvnKey = "family_graph_http_config_path"
 
 var (
 	Conf Config
