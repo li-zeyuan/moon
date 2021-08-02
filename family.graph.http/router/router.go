@@ -4,16 +4,16 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/li-zeyuan/micro/family.graph.http/app/api"
+	"github.com/li-zeyuan/micro/family.graph.http/library/middleware"
 	middleware2 "github.com/li-zeyuan/micro/micro.common.api/middleware"
-	"github.com/li-zeyuan/micro/user.logic.http/app/api"
-	"github.com/li-zeyuan/micro/user.logic.http/library/middleware"
 )
 
 func Init(srv *http.ServeMux) {
 	r := NewRouter()
 	r.Use(middleware2.RequestIdMiddleware)
 	r.Use(middleware.InfraMiddleware)
-	r.Add("/api/user/login/sing_up", http.HandlerFunc(api.Login.SingUp))
+	r.Add("/api/family_graph/graph", http.HandlerFunc(api.FamilyGraph.MethodDispatcher))
 
 	for url, handler := range r.mux {
 		log.Println("api: ", url)

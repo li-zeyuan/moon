@@ -13,11 +13,11 @@ import (
 	"github.com/li-zeyuan/micro/micro.common.api/utils"
 )
 
-var Login = loginService{}
+var FamilyGraph = familyGraphService{}
 
-type loginService struct{}
+type familyGraphService struct{}
 
-func (l *loginService) VerifySingUp(infra *middleware.Infra, req *model.LoginApiSingUpReq) error {
+func (l *familyGraphService) VerifySingUp(infra *middleware.Infra, req *model.LoginApiSingUpReq) error {
 	if isLetterOrDigit, _ := regexp.MatchString(`^[A-Za-z0-9]{1,16}$`, req.Passport); !isLetterOrDigit {
 		return errorenum.ErrorPassportLetterOrDigit
 	}
@@ -41,7 +41,7 @@ func (l *loginService) VerifySingUp(infra *middleware.Infra, req *model.LoginApi
 	return nil
 }
 
-func (l *loginService) SingUp(infra *middleware.Infra, req *model.LoginApiSingUpReq) error {
+func (l *familyGraphService) SingUp(infra *middleware.Infra, req *model.LoginApiSingUpReq) error {
 	pf := new(profile.Profile)
 	pf.Uid = sequence.NewID()
 	pf.Name = req.Name

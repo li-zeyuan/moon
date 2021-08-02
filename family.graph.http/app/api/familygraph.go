@@ -6,15 +6,27 @@ import (
 	"github.com/li-zeyuan/micro/family.graph.http/app/model"
 	"github.com/li-zeyuan/micro/family.graph.http/app/service"
 	"github.com/li-zeyuan/micro/family.graph.http/library/middleware"
-	"github.com/li-zeyuan/micro/family.graph.http/library/request"
-	"github.com/li-zeyuan/micro/family.graph.http/library/response"
+	"github.com/li-zeyuan/micro/micro.common.api/request"
+	"github.com/li-zeyuan/micro/micro.common.api/response"
 )
 
-var Login = new(loginAPI)
+var FamilyGraph = new(familyGraphAPI)
 
-type loginAPI struct{}
+type familyGraphAPI struct{}
 
-func (l *loginAPI) SingUp(w http.ResponseWriter, r *http.Request) {
+func (l *familyGraphAPI) MethodDispatcher(w http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case http.MethodGet:
+		l.get(w, r)
+	case http.MethodPost:
+
+	}
+}
+
+/*
+获取家族图
+*/
+func (l *familyGraphAPI) get(w http.ResponseWriter, r *http.Request) {
 	infra := middleware.GetInfra(r.Context())
 
 	apiReq := new(model.LoginApiSingUpReq)
@@ -24,13 +36,13 @@ func (l *loginAPI) SingUp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = service.Login.VerifySingUp(infra, apiReq)
+	err = service.FamilyGraph.VerifySingUp(infra, apiReq)
 	if err != nil {
 		response.AbortWithStatusJSON(w, http.StatusOK, err)
 		return
 	}
 
-	err = service.Login.SingUp(infra, apiReq)
+	err = service.FamilyGraph.SingUp(infra, apiReq)
 	if err != nil {
 		response.AbortWithStatusJSON(w, http.StatusOK, err)
 		return
