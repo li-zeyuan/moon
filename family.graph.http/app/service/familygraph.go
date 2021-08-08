@@ -58,3 +58,8 @@ func (l *familyGraphService) SingUp(infra *middleware.Infra, req *model.LoginApi
 
 	return nil
 }
+
+func (f *familyGraphService) CreateNode(infra *middleware.Infra, req *model.FamilyGraphAPICreateReq) error {
+
+	return nil
+}

@@ -6,7 +6,11 @@ import (
 	"io"
 	"net/http"
 	"reflect"
+
+	"github.com/go-playground/validator/v10"
 )
+
+var validate *validator.Validate
 
 func ParseBody(r *http.Request, reqPointer interface{}) error {
 	if reflect.ValueOf(reqPointer).Kind() != reflect.Ptr {
@@ -18,6 +22,11 @@ func ParseBody(r *http.Request, reqPointer interface{}) error {
 		return err
 	}
 	err = json.Unmarshal(body, reqPointer)
+	if err != nil {
+		return err
+	}
+
+	err = validate.Struct(reqPointer)
 	if err != nil {
 		return err
 	}

@@ -13,7 +13,11 @@ func Init(srv *http.ServeMux) {
 	r := NewRouter()
 	r.Use(middleware2.RequestIdMiddleware)
 	r.Use(middleware.InfraMiddleware)
-	r.Add("/api/family_graph/graph", http.HandlerFunc(api.FamilyGraph.MethodDispatcher))
+	r.Add("/api/family_graph/create", http.HandlerFunc(api.FamilyGraph.Create))
+	r.Add("/api/family_graph/update", http.HandlerFunc(api.FamilyGraph.Update))
+	r.Add("/api/family_graph/detail", http.HandlerFunc(api.FamilyGraph.Detail))
+	r.Add("/api/family_graph/delete", http.HandlerFunc(api.FamilyGraph.Delete))
+	r.Add("/api/family_graph/graph", http.HandlerFunc(api.FamilyGraph.Graph))
 
 	for url, handler := range r.mux {
 		log.Println("api: ", url)
