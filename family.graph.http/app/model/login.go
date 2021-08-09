@@ -1,10 +1,10 @@
 package model
 
 type FamilyGraphAPICreateReq struct {
-	Phone       string `json:"phone" validate:"eq=11"`
+	Passport    string `json:"Passport" validate:"required"`
 	Name        string `json:"name" validate:"min=0,max=5"`
-	Gender      int    `json:"gender" validate:"oneof=1 2"`
-	Birth       int    `json:"birth"`
+	Gender      int32  `json:"gender" validate:"oneof=1 2"`
+	Birth       int64  `json:"birth"`
 	Description string `json:"description"`
 }
 

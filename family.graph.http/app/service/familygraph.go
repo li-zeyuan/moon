@@ -59,7 +59,18 @@ func (l *familyGraphService) SingUp(infra *middleware.Infra, req *model.LoginApi
 	return nil
 }
 
-func (f *familyGraphService) CreateNode(infra *middleware.Infra, req *model.FamilyGraphAPICreateReq) error {
+func (*familyGraphService) CreateNode(infra *middleware.Infra, req *model.FamilyGraphAPICreateReq) error {
+	pfUpdateField := new(userdbrpc.ProfileUpdateField)
+	pfUpdateField.Passport = &req.Passport
+	pfUpdateField.Name = &req.Name
+	pfUpdateField.Gender = &req.Gender
+	pfUpdateField.Birth = &req.Birth
+	pfUpdateField.Description = &req.Description
+	err := userdbrpc.UpsertProfile(infra.BaseInfra, pfUpdateField)
+	if err != nil {
+		return err
+	}
 
+	// todo 创建树
 	return nil
 }

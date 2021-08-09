@@ -9,6 +9,11 @@ message Profile {
     string name = 2;
     string passport = 3;
     string password = 4;
+    int32 gender = 5;
+    int64 birth = 6;
+    string portrait = 7;
+    string hometown = 8;
+    string description = 9;
 }
 
 message SaveReq {

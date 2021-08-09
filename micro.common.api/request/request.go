@@ -10,7 +10,7 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-var validate *validator.Validate
+var validate = validator.New()
 
 func ParseBody(r *http.Request, reqPointer interface{}) error {
 	if reflect.ValueOf(reqPointer).Kind() != reflect.Ptr {

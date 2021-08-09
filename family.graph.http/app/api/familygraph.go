@@ -24,7 +24,6 @@ func (l *familyGraphAPI) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// todo
 	err = service.FamilyGraph.CreateNode(infra, apiReq)
 	if err != nil {
 		response.AbortWithStatusJSON(w, http.StatusOK, err)

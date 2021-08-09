@@ -7,9 +7,7 @@ import (
 	"github.com/li-zeyuan/micro/micro.common.api/sequence"
 	userdbrpc "github.com/li-zeyuan/micro/micro.common.api/server/user.db.rpc"
 	"github.com/li-zeyuan/micro/micro.common.api/server/user.db.rpc/pb/profile"
-	"github.com/li-zeyuan/micro/micro.common.api/utils"
 	"github.com/li-zeyuan/micro/user.logic.http/app/model"
-	"github.com/li-zeyuan/micro/user.logic.http/config"
 	"github.com/li-zeyuan/micro/user.logic.http/library/middleware"
 )
 
@@ -48,10 +46,7 @@ func (l *loginService) SingUp(infra *middleware.Infra, req *model.LoginApiSingUp
 	pf.Passport = req.Passport
 	pf.Password = req.Password
 
-	profileRpcReq := profile.SaveReq{}
-	profileRpcReq.Profiles = append(profileRpcReq.Profiles, pf)
-	profileRpcResp := profile.SaveResp{}
-	err := utils.Invoke(infra.BaseInfra, config.GetServerClient(userdbrpc.ServerNameUserDbRpc).Address, userdbrpc.UrlProfileSave, &profileRpcReq, &profileRpcResp)
+	err := userdbrpc.InsertProfile(infra.BaseInfra, []*profile.Profile{pf})
 	if err != nil {
 		return err
 	}
