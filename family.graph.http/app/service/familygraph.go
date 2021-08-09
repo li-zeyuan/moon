@@ -71,6 +71,8 @@ func (*familyGraphService) CreateNode(infra *middleware.Infra, req *model.Family
 		return err
 	}
 
+	// todo profile建表测试
+
 	// todo 创建树
 	return nil
 }
