@@ -6,7 +6,19 @@ import (
 	"gorm.io/gorm"
 )
 
-const UserModelTableName = "user_info"
+const (
+	TableNameUserProfile = "user_profile"
+
+	ColumnUid         = "uid"
+	ColumnName        = "name"
+	ColumnPassport    = "passport"
+	ColumnPassword    = "password"
+	ColumnGender      = "gender"
+	ColumnBirth       = "birth"
+	ColumnPortrait    = "portrait"
+	ColumnHometown    = "hometown"
+	ColumnDescription = "description"
+)
 
 type UserProfileModel struct {
 	gorm.Model

@@ -25,6 +25,17 @@ func TestUserDao_Save(t *testing.T) {
 	assert.Equal(t, err, nil)
 }
 
+func TestUserDao_Update(t *testing.T) {
+	infra := interceptor.NewInfra(context.Background(), "")
+	values := map[string]interface{}{
+		"passport": "lizeyuan",
+	}
+
+	userDao := NewUser(infra.DB)
+	err := userDao.Update(infra, 1, values)
+	assert.Equal(t, err, nil)
+}
+
 func TestUserDao_Get(t *testing.T) {
 	infra := interceptor.NewInfra(context.Background(), "")
 	uids := []int64{
@@ -46,13 +57,5 @@ func TestUserDao_GetByPassport(t *testing.T) {
 	userDao := NewUser(infra.DB)
 	userInfos, err := userDao.GetByPassport(infra, passports)
 	assert.Equal(t, err, nil)
-	t.Log(userInfos)
-}
-
-func TestUserDao_GetColumnTypes(t *testing.T) {
-	infra := interceptor.NewInfra(context.Background(), "")
-
-	userDao := NewUser(infra.DB)
-	userInfos := userDao.GetColumnTypes()
 	t.Log(userInfos)
 }

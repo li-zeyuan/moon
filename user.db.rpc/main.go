@@ -26,7 +26,7 @@ func main() {
 		)),
 	)
 
-	logger.DefaultLogger.Info("server: %s, port: %s", config.Conf.Server.ServiceName, config.Conf.Server.Port)
+	logger.DefaultLogger.Infof("server: %s, port: %s", config.Conf.Server.ServiceName, config.Conf.Server.Port)
 	profile.RegisterProfileServiceServer(s, &service.ProfileServer{})
 	if err := s.Serve(lis); err != nil {
 		logger.DefaultLogger.Fatalf("failed to serve: %v", err)

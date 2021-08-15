@@ -2,11 +2,11 @@ package service
 
 import (
 	"context"
-	"log"
 
 	"github.com/li-zeyuan/micro/micro.common.api/errorenum"
 	"github.com/li-zeyuan/micro/micro.common.api/server/user.db.rpc/pb/profile"
 	"github.com/li-zeyuan/micro/user.db.rpc/app/dao"
+	"github.com/li-zeyuan/micro/user.db.rpc/app/model"
 	"github.com/li-zeyuan/micro/user.db.rpc/app/model/inner"
 	"github.com/li-zeyuan/micro/user.db.rpc/interceptor"
 )
@@ -35,6 +35,22 @@ func (s *ProfileServer) Save(ctx context.Context, in *profile.SaveReq) (*profile
 	}
 
 	return &profile.SaveResp{}, nil
+}
+
+func (s *ProfileServer) Update(ctx context.Context, in *profile.UpdateReq) (*profile.UpdateResp, error) {
+	infra := interceptor.GetInfra(ctx)
+
+	userDao := dao.NewUser(infra.DB)
+	err := userDao.Update(infra, model.Profiles2Model(in.Profiles))
+	if err != nil {
+		return &profile.UpdateResp{DmError: -1, ErrorMsg: err.Error()}, err
+	}
+
+	return &profile.UpdateResp{}, nil
+}
+
+func (s *ProfileServer) Del(ctx context.Context, in *profile.DelRep) (*profile.DelResp, error) {
+	return &profile.DelResp{}, nil
 }
 
 func (s *ProfileServer) Get(ctx context.Context, in *profile.GetReq) (*profile.GetResp, error) {
@@ -87,9 +103,4 @@ func (s *ProfileServer) GetByPassport(ctx context.Context, in *profile.GetByPass
 	}
 
 	return &profile.GetByPassportResp{Data: data}, nil
-}
-
-func (s *ProfileServer) Upsert(ctx context.Context, in *profile.UpdateReq) (*profile.UpdateResp, error) {
-	log.Printf("Received: %v", in.GetProfiles())
-	return &profile.UpdateResp{}, nil
 }
