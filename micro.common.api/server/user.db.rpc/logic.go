@@ -25,7 +25,7 @@ func GetProfileByPassport(baseInfra *middleware.BaseInfra, passports []string) (
 	return passportMap, nil
 }
 
-func InsertProfile(baseInfra *middleware.BaseInfra, pfs []*profile.Profile) error {
+func CreateProfile(baseInfra *middleware.BaseInfra, pfs []*profile.Profile) error {
 	if len(pfs) == 0 {
 		return nil
 	}
@@ -73,7 +73,7 @@ func UpsertProfile(baseInfra *middleware.BaseInfra, pfUpdateField *ProfileUpdate
 		pf.Passport = *pfUpdateField.Passport
 		generateProfile(pf, pfUpdateField)
 
-		err = InsertProfile(baseInfra, []*profile.Profile{pf})
+		err = CreateProfile(baseInfra, []*profile.Profile{pf})
 		if err != nil {
 			return err
 		}

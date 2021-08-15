@@ -27,12 +27,17 @@ func TestUserDao_Save(t *testing.T) {
 
 func TestUserDao_Update(t *testing.T) {
 	infra := interceptor.NewInfra(context.Background(), "")
-	values := map[string]interface{}{
-		"passport": "lizeyuan",
+	models := []*inner.UserProfileModel{
+		&inner.UserProfileModel{
+			Uid:      11,
+			Passport: "lizeyuan",
+			Password: "lizeyuan",
+			Name:     "nick",
+		},
 	}
 
 	userDao := NewUser(infra.DB)
-	err := userDao.Update(infra, 1, values)
+	err := userDao.Update(infra, models)
 	assert.Equal(t, err, nil)
 }
 

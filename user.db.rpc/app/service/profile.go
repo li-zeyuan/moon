@@ -4,7 +4,9 @@ import (
 	"context"
 
 	"github.com/li-zeyuan/micro/micro.common.api/errorenum"
+	"github.com/li-zeyuan/micro/micro.common.api/sequence"
 	"github.com/li-zeyuan/micro/micro.common.api/server/user.db.rpc/pb/profile"
+	"github.com/li-zeyuan/micro/micro.common.api/utils"
 	"github.com/li-zeyuan/micro/user.db.rpc/app/dao"
 	"github.com/li-zeyuan/micro/user.db.rpc/app/model"
 	"github.com/li-zeyuan/micro/user.db.rpc/app/model/inner"
@@ -22,9 +24,17 @@ func (s *ProfileServer) Save(ctx context.Context, in *profile.SaveReq) (*profile
 	for _, pf := range in.Profiles {
 		pfModel := new(inner.UserProfileModel)
 		pfModel.Uid = pf.Uid
+		if pfModel.Uid == 0 {
+			pfModel.Uid = sequence.NewID()
+		}
 		pfModel.Name = pf.Name
 		pfModel.Passport = pf.Passport
 		pfModel.Password = pf.Password
+		pfModel.Gender = int(pf.Gender)
+		pfModel.Birth = utils.TimeStamp2Time(pf.Birth)
+		pfModel.Portrait = pf.Portrait
+		pfModel.Hometown = pf.Hometown
+		pfModel.Description = pf.Description
 		profiles = append(profiles, pfModel)
 	}
 
