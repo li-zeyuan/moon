@@ -3,7 +3,9 @@ package service
 import (
 	"regexp"
 
+	"github.com/li-zeyuan/micro/family.graph.http/app/dao"
 	"github.com/li-zeyuan/micro/family.graph.http/app/model"
+	"github.com/li-zeyuan/micro/family.graph.http/app/model/inner"
 	"github.com/li-zeyuan/micro/family.graph.http/config"
 	"github.com/li-zeyuan/micro/family.graph.http/library/middleware"
 	"github.com/li-zeyuan/micro/micro.common.api/errorenum"
@@ -72,5 +74,6 @@ func (*familyGraphService) CreateNode(infra *middleware.Infra, req *model.Family
 	}
 
 	// todo 创建树
-	return nil
+	relationDao := dao.NewRelation(infra.DB)
+	return relationDao.Save(infra, []*inner.MemberRelationModel{})
 }

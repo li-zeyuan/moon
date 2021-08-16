@@ -8,8 +8,10 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
+type Key string
+
 const (
-	InfraKey = "infra"
+	InfraKey Key = "infra"
 )
 
 type BaseInfra struct {
@@ -49,7 +51,7 @@ func BaseInfraMiddleware(next http.Handler) http.Handler {
 		ctx = context.WithValue(ctx, InfraKey, infra)
 		// 设置context到r.context
 		r = r.WithContext(ctx)
-		w.Header().Add(InfraKey, requestId)
+		w.Header().Add(string(InfraKey), requestId)
 
 		next.ServeHTTP(w, r)
 	})
