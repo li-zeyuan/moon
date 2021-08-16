@@ -31,7 +31,7 @@ func GetInfra(c context.Context) *Infra {
 
 	infra, ok := c.Value(middleware.InfraKey).(*Infra)
 	if !ok {
-		logger.DefaultLogger.Warnf("can not transfer InfraKey")
+		logger.DefaultLogger.Warnf("can not transfer infra key")
 		return NewInfra(context.Background(), bson.NewObjectId().Hex())
 	}
 
