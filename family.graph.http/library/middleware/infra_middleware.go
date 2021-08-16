@@ -20,6 +20,7 @@ func NewInfra(ctx context.Context, requestId string) *Infra {
 	return &Infra{
 		middleware.NewBaseInfra(ctx, requestId),
 		config.InitDatabase(&config.Conf),
+		fef
 	}
 }
 
