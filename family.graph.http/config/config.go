@@ -21,9 +21,18 @@ type serverClient struct {
 	Address     string `toml:"address"`
 }
 
+type database struct {
+	Name    string `toml:"name"`
+	DSN     string `toml:"dsn"`
+	MaxConn int    `toml:"max_conn"`
+	MaxOpen int    `toml:"max_open"`
+	Timeout int64  `toml:"timeout"`
+}
+
 type Config struct {
 	Server       server         `toml:"server"`
 	ServerClient []serverClient `toml:"server_client"`
+	DB           database       `toml:"database"`
 }
 
 func InitConfig(path string) {

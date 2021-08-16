@@ -9,4 +9,5 @@ import (
 func Init() {
 	configPath := os.Getenv(config.ServerConfigPathEvnKey)
 	config.InitConfig(configPath)
+	config.InitDatabase(&config.Conf)
 }
