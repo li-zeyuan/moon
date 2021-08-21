@@ -7,15 +7,10 @@ import (
 const (
 	TableNameMemberRelate = "member_relate"
 
-	ColumnUid         = "uid"
-	ColumnName        = "name"
-	ColumnPassport    = "passport"
-	ColumnPassword    = "password"
-	ColumnGender      = "gender"
-	ColumnBirth       = "birth"
-	ColumnPortrait    = "portrait"
-	ColumnHometown    = "hometown"
-	ColumnDescription = "description"
+	ColumnUid       = "uid"
+	ColumnFatherUid = "father_uid"
+	ColumnSpouseUid = "spouse_uid"
+	ColumnIndex     = "index"
 )
 
 type MemberRelationModel struct {
@@ -24,4 +19,8 @@ type MemberRelationModel struct {
 	FatherUid int64 // 父节点uid
 	SpouseUid int64 // 配偶uid
 	Index     int   // 兄弟节点间的排序，default 1
+}
+
+type IndexObj struct {
+	Index int
 }

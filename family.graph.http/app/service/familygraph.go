@@ -82,10 +82,14 @@ func (*familyGraphService) CreateNode(infra *middleware.Infra, req *model.Family
 		return err
 	}
 
-	// todo 创建树
+	index, err := relationDao.GetIndex(infra, req.FatherUid)
+	if err != nil {
+		return err
+	}
+
 	relation := new(inner.MemberRelationModel)
 	relation.Uid = pf.Uid
 	relation.FatherUid = req.FatherUid
-	//relation.Index = pf.Uid
-	return relationDao.Save(infra, []*inner.MemberRelationModel{})
+	relation.Index = index + 1
+	return relationDao.Save(infra, []*inner.MemberRelationModel{relation})
 }

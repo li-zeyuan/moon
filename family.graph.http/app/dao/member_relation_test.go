@@ -18,3 +18,14 @@ func TestRelationDao_Save(t *testing.T) {
 	err := familyDao.Save(infra, []*inner.MemberRelationModel{fModel})
 	assert.Equal(t, err, nil)
 }
+
+func TestRelationDao_GetIndex(t *testing.T) {
+	infra := middleware.NewInfra(context.Background(), "")
+	familyDao := NewRelation(infra.DB)
+
+	fModel := new(inner.MemberRelationModel)
+	fModel.Uid = 11
+	index, err := familyDao.GetIndex(infra, 111)
+	assert.Equal(t, err, nil)
+	t.Log(index)
+}

@@ -1,6 +1,8 @@
 package dao
 
 import (
+	"fmt"
+
 	"github.com/li-zeyuan/micro/family.graph.http/app/model/inner"
 	"github.com/li-zeyuan/micro/family.graph.http/library/middleware"
 	"gorm.io/gorm"
@@ -41,4 +43,23 @@ func (d *RelationDao) Save(infra *middleware.Infra, models []*inner.MemberRelati
 	}
 
 	return nil
+}
+
+func (d *RelationDao) GetIndex(infra *middleware.Infra, fatherUid int64) (int, error) {
+	if fatherUid == 0 {
+		return 0, nil
+	}
+
+	m := new(inner.IndexObj)
+	err := d.db.Table(inner.TableNameMemberRelate).
+		Select(inner.ColumnIndex).
+		Where(fmt.Sprintf("%s=?", inner.ColumnFatherUid), fatherUid).
+		//Order(fmt.Sprintf("%s desc", inner.ColumnIndex)).
+		Last(m).Error
+	if err != nil {
+		infra.Log.Error("get member relation index error: ", err)
+		return 0, err
+	}
+
+	return m.Index, nil
 }
