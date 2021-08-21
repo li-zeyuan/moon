@@ -77,12 +77,15 @@ func (*familyGraphService) CreateNode(infra *middleware.Infra, req *model.Family
 	pfUpdateField.Gender = &req.Gender
 	pfUpdateField.Birth = &req.Birth
 	pfUpdateField.Description = &req.Description
-	err = userdbrpc.UpsertProfile(infra.BaseInfra, pfUpdateField)
+	pf, err := userdbrpc.UpsertProfile(infra.BaseInfra, pfUpdateField)
 	if err != nil {
 		return err
 	}
 
 	// todo 创建树
-
+	relation := new(inner.MemberRelationModel)
+	relation.Uid = pf.Uid
+	relation.FatherUid = req.FatherUid
+	//relation.Index = pf.Uid
 	return relationDao.Save(infra, []*inner.MemberRelationModel{})
 }

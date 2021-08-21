@@ -46,7 +46,7 @@ func (l *loginService) SingUp(infra *middleware.Infra, req *model.LoginApiSingUp
 	pf.Passport = req.Passport
 	pf.Password = req.Password
 
-	err := userdbrpc.CreateProfile(infra.BaseInfra, []*profile.Profile{pf})
+	_, err := userdbrpc.CreateProfile(infra.BaseInfra, []*profile.Profile{pf})
 	if err != nil {
 		return err
 	}

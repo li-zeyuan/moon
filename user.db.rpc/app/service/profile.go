@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"encoding/json"
 
 	"github.com/li-zeyuan/micro/micro.common.api/errorenum"
 	"github.com/li-zeyuan/micro/micro.common.api/sequence"
@@ -44,7 +45,11 @@ func (s *ProfileServer) Save(ctx context.Context, in *profile.SaveReq) (*profile
 		return &profile.SaveResp{DmError: -1, ErrorMsg: err.Error()}, err
 	}
 
-	return &profile.SaveResp{}, nil
+	bPf, err := json.Marshal(inner.ProfileModel2Pf(profiles))
+	if err != nil {
+		return &profile.SaveResp{DmError: -1, ErrorMsg: err.Error()}, err
+	}
+	return &profile.SaveResp{Data: bPf}, nil
 }
 
 func (s *ProfileServer) Update(ctx context.Context, in *profile.UpdateReq) (*profile.UpdateResp, error) {

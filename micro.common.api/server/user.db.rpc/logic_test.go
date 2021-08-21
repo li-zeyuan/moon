@@ -21,7 +21,7 @@ func TestInsertProfile(t *testing.T) {
 	pf := new(profile.Profile)
 	pf.Name = "lizeyua"
 	pf.Passport = "lizeyuan"
-	err := CreateProfile(bInfra, []*profile.Profile{pf})
+	_, err := CreateProfile(bInfra, []*profile.Profile{pf})
 	assert.Equal(t, err, nil)
 }
 

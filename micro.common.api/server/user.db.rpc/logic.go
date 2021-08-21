@@ -1,6 +1,7 @@
 package userdbrpc
 
 import (
+	"encoding/json"
 	"errors"
 
 	"github.com/li-zeyuan/micro/micro.common.api/middleware"
@@ -25,9 +26,9 @@ func GetProfileByPassport(baseInfra *middleware.BaseInfra, passports []string) (
 	return passportMap, nil
 }
 
-func CreateProfile(baseInfra *middleware.BaseInfra, pfs []*profile.Profile) error {
+func CreateProfile(baseInfra *middleware.BaseInfra, pfs []*profile.Profile) ([]*profile.Profile, error) {
 	if len(pfs) == 0 {
-		return nil
+		return nil, nil
 	}
 
 	req := profile.SaveReq{}
@@ -35,10 +36,17 @@ func CreateProfile(baseInfra *middleware.BaseInfra, pfs []*profile.Profile) erro
 	profileRpcResp := profile.SaveResp{}
 	err := utils.Invoke(baseInfra, userDbRpcAddress, UrlProfileSave, &req, &profileRpcResp)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	resultPfs := make([]*profile.Profile, 0)
+	err = json.Unmarshal(profileRpcResp.Data, &resultPfs)
+	if err != nil {
+		baseInfra.Log.Error("json unmarshal profile error: ", err)
+		return nil, err
+	}
+
+	return resultPfs, nil
 }
 
 func UpdateProfile(baseInfra *middleware.BaseInfra, pfs []*profile.Profile) error {
@@ -57,38 +65,41 @@ func UpdateProfile(baseInfra *middleware.BaseInfra, pfs []*profile.Profile) erro
 	return nil
 }
 
-func UpsertProfile(baseInfra *middleware.BaseInfra, pfUpdateField *ProfileUpdateField) error {
+func UpsertProfile(baseInfra *middleware.BaseInfra, pfUpdateField *ProfileUpdateField) (*profile.Profile, error) {
 	if pfUpdateField.Passport == nil || len(*pfUpdateField.Passport) == 0 {
-		return errors.New("passport required")
+		return nil, errors.New("passport required")
 	}
 
 	pfMap, err := GetProfileByPassport(baseInfra, []string{*pfUpdateField.Passport})
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	existPf, ok := pfMap[*pfUpdateField.Passport]
 	if !ok {
 		pf := new(profile.Profile)
 		pf.Passport = *pfUpdateField.Passport
-		generateProfile(pf, pfUpdateField)
+		fieldUpdate2Profile(pf, pfUpdateField)
 
-		err = CreateProfile(baseInfra, []*profile.Profile{pf})
+		pfs, err := CreateProfile(baseInfra, []*profile.Profile{pf})
 		if err != nil {
-			return err
+			return nil, err
+		}
+		if len(pfs) > 0 {
+			existPf = pfs[0]
 		}
 	} else {
-		generateProfile(existPf, pfUpdateField)
+		fieldUpdate2Profile(existPf, pfUpdateField)
 		err = UpdateProfile(baseInfra, []*profile.Profile{existPf})
 		if err != nil {
-			return err
+			return nil, err
 		}
 	}
 
-	return nil
+	return existPf, nil
 }
 
-func generateProfile(pf *profile.Profile, pfUpdateField *ProfileUpdateField) {
+func fieldUpdate2Profile(pf *profile.Profile, pfUpdateField *ProfileUpdateField) {
 	if pfUpdateField.Name != nil {
 		pf.Name = *pfUpdateField.Name
 	}
