@@ -6,6 +6,7 @@ type FamilyGraphAPICreateReq struct {
 	Gender      int32  `json:"gender" validate:"oneof=1 2"`
 	Birth       int64  `json:"birth"`
 	Description string `json:"description"`
+	FatherUid   int64  `json:"father_uid"`
 }
 
 type LoginApiSingUpReq struct {

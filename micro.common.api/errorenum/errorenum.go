@@ -28,3 +28,8 @@ var (
 	ErrorPasswordLength        = ErrorCode{Code: 202, Msg: "两次输入密码输入不一致"}
 	ErrorPasswordLetterOrDigit = ErrorCode{Code: 203, Msg: "密码只能是数字或字母"}
 )
+
+// family_graph
+var (
+	ErrorFatherUidEmpty = ErrorCode{Code: 300, Msg: "father uid should not empty"}
+)

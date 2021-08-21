@@ -9,7 +9,7 @@
 
 [database]
     name = "mciro_family_graph_db"
-    dsn = "root:_d6JE49FQsWT@tcp(39.108.101.229:3433)/micro?charset=utf8mb4&parseTime=True&loc=Local"
+    dsn = "root:_d6JE49FQsWT@tcp(39.108.101.229:3433)/micro_family_graph?charset=utf8mb4&parseTime=True&loc=Local"
     port = 3306
     max_conn = 100
     max_open = 10

@@ -1,6 +1,8 @@
 package config
 
 import (
+	"os"
+
 	"github.com/BurntSushi/toml"
 )
 
@@ -35,8 +37,9 @@ type Config struct {
 	DB           database       `toml:"database"`
 }
 
-func InitConfig(path string) {
-	_, err := toml.DecodeFile(path, &Conf)
+func init() {
+	configPath := os.Getenv(ServerConfigPathEvnKey)
+	_, err := toml.DecodeFile(configPath, &Conf)
 	if err != nil {
 		panic(err)
 	}

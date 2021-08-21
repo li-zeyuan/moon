@@ -62,18 +62,27 @@ func (l *familyGraphService) SingUp(infra *middleware.Infra, req *model.LoginApi
 }
 
 func (*familyGraphService) CreateNode(infra *middleware.Infra, req *model.FamilyGraphAPICreateReq) error {
+	relationDao := dao.NewRelation(infra.DB)
+	isExistBaseNode, err := relationDao.IsExistBaseNode(infra)
+	if err != nil {
+		return err
+	}
+	if req.FatherUid == 0 && isExistBaseNode {
+		return errorenum.ErrorFatherUidEmpty
+	}
+
 	pfUpdateField := new(userdbrpc.ProfileUpdateField)
 	pfUpdateField.Passport = &req.Passport
 	pfUpdateField.Name = &req.Name
 	pfUpdateField.Gender = &req.Gender
 	pfUpdateField.Birth = &req.Birth
 	pfUpdateField.Description = &req.Description
-	err := userdbrpc.UpsertProfile(infra.BaseInfra, pfUpdateField)
+	err = userdbrpc.UpsertProfile(infra.BaseInfra, pfUpdateField)
 	if err != nil {
 		return err
 	}
 
 	// todo 创建树
-	relationDao := dao.NewRelation(infra.DB)
+
 	return relationDao.Save(infra, []*inner.MemberRelationModel{})
 }

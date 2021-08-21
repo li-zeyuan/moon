@@ -16,6 +16,18 @@ func NewRelation(db *gorm.DB) *RelationDao {
 	}
 }
 
+func (d *RelationDao) IsExistBaseNode(infra *middleware.Infra) (bool, error) {
+	var amount int64
+	err := d.db.Table(inner.TableNameMemberRelate).
+		Count(&amount).Error
+	if err != nil {
+		infra.Log.Error("check if exist base note error: ", err)
+		return false, err
+	}
+
+	return amount == 0, nil
+}
+
 func (d *RelationDao) Save(infra *middleware.Infra, models []*inner.MemberRelationModel) error {
 	if len(models) == 0 {
 		return nil
