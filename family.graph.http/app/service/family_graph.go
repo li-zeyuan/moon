@@ -62,7 +62,7 @@ func (l *familyGraphService) SingUp(infra *middleware.Infra, req *model.LoginApi
 }
 
 func (*familyGraphService) CreateNode(infra *middleware.Infra, req *model.FamilyGraphAPICreateReq) error {
-	relationDao := dao.NewRelation(infra.DB)
+	relationDao := dao.NewRelationDao(infra.DB)
 	isExistBaseNode, err := relationDao.IsExistBaseNode(infra)
 	if err != nil {
 		return err

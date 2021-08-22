@@ -11,7 +11,7 @@ import (
 
 func TestRelationDao_Save(t *testing.T) {
 	infra := middleware.NewInfra(context.Background(), "")
-	familyDao := NewRelation(infra.DB)
+	familyDao := NewRelationDao(infra.DB)
 
 	fModel := new(inner.MemberRelationModel)
 	fModel.Uid = 11
@@ -21,7 +21,7 @@ func TestRelationDao_Save(t *testing.T) {
 
 func TestRelationDao_GetIndex(t *testing.T) {
 	infra := middleware.NewInfra(context.Background(), "")
-	familyDao := NewRelation(infra.DB)
+	familyDao := NewRelationDao(infra.DB)
 
 	fModel := new(inner.MemberRelationModel)
 	fModel.Uid = 11

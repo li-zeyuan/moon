@@ -14,9 +14,33 @@ ALTER TABLE member_relate
     CHANGE updated_at updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 */
 
+func TestCreateFamily(t *testing.T) {
+	infra := middleware.NewInfra(context.Background(), "")
+	familyDao := NewFamilyDao(infra.DB)
+
+	m := familyDao.db.Migrator()
+	err := m.CreateTable(&inner.FamilyModel{})
+	if err != nil {
+		infra.Log.Error("create table error: ", err)
+		return
+	}
+
+	err = m.CreateIndex(&inner.FamilyModel{}, "idx_deleted_at")
+	if err != nil {
+		infra.Log.Error("create index error: ", err)
+		return
+	}
+
+	err = m.CreateIndex(&inner.FamilyModel{}, "idx_uid")
+	if err != nil {
+		infra.Log.Error("create index error: ", err)
+		return
+	}
+}
+
 func TestCreateMemberRelation(t *testing.T) {
 	infra := middleware.NewInfra(context.Background(), "")
-	familyDao := NewRelation(infra.DB)
+	familyDao := NewRelationDao(infra.DB)
 
 	m := familyDao.db.Migrator()
 	err := m.CreateTable(&inner.MemberRelationModel{})

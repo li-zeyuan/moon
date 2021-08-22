@@ -13,6 +13,7 @@ func Init(srv *http.ServeMux) {
 	r := NewRouter()
 	r.Use(middleware2.RequestIdMiddleware)
 	r.Use(middleware.InfraMiddleware)
+	r.Add("/api/family/create", http.HandlerFunc(api.Family.Create))
 	r.Add("/api/family_graph/create", http.HandlerFunc(api.FamilyGraph.Create))
 	r.Add("/api/family_graph/update", http.HandlerFunc(api.FamilyGraph.Update))
 	r.Add("/api/family_graph/detail", http.HandlerFunc(api.FamilyGraph.Detail))

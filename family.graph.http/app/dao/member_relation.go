@@ -12,7 +12,7 @@ type RelationDao struct {
 	db *gorm.DB
 }
 
-func NewRelation(db *gorm.DB) *RelationDao {
+func NewRelationDao(db *gorm.DB) *RelationDao {
 	return &RelationDao{
 		db: db,
 	}
