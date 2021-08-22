@@ -6,3 +6,8 @@ type FamilyAPICreateReq struct {
 	Portrait    string `json:"portrait"`
 	Description string `json:"description"`
 }
+
+type FamilyAPIJoinReq struct {
+	Uid      int64 `json:"uid" validate:"gt=0"`
+	FamilyId int64 `json:"family_id" validate:"gt=0"`
+}

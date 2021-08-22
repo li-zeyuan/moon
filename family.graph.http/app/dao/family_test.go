@@ -14,7 +14,16 @@ func TestFamilyDao_Save(t *testing.T) {
 	familyDao := NewFamilyDao(infra.DB)
 
 	fModel := new(inner.FamilyModel)
-	fModel.Uid = 11
+	fModel.Name = "11"
 	err := familyDao.Save(infra, []*inner.FamilyModel{fModel})
 	assert.Equal(t, err, nil)
+}
+
+func TestFamilyDao_OneById(t *testing.T) {
+	infra := middleware.NewInfra(context.Background(), "")
+	familyDao := NewFamilyDao(infra.DB)
+
+	m, err := familyDao.OneById(infra, 320116416581725952)
+	assert.Equal(t, err, nil)
+	t.Log(m)
 }

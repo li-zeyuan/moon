@@ -31,5 +31,7 @@ var (
 
 // family_graph
 var (
-	ErrorFatherUidEmpty = ErrorCode{Code: 300, Msg: "father uid should not empty"}
+	ErrorFatherUidEmpty    = ErrorCode{Code: 300, Msg: "father uid should not empty"}
+	ErrorExistFamilyMember = ErrorCode{Code: 301, Msg: "uid exist family member"}
+	ErrorNotExistFamily    = ErrorCode{Code: 301, Msg: "not exist family"}
 )
