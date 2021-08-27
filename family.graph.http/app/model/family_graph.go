@@ -1,12 +1,23 @@
 package model
 
+const (
+	OptionAddBaseNode   = 1
+	OptionAddFatherNode = 2
+	OptionAddChildNode  = 3
+	OptionAddSpouseNode = 4
+)
+
 type FamilyGraphAPICreateReq struct {
-	Passport    string `json:"Passport" validate:"required"`
-	Name        string `json:"name" validate:"min=0,max=5"`
-	Gender      int32  `json:"gender" validate:"oneof=1 2"`
+	Option      int    `json:"option" validate:"oneof=1 2 3 4"` // 1-添加跟节点；2-添加父节点；3-添加孩子节点；4添加配偶节点
+	FamilyId    int64  `json:"family_id" validate:"len=18"`
+	CurrentNode int64  `json:"current_node"`
+	FatherNode  int64  `json:"father_node"`
+	Name        string `json:"name"`
+	Gender      int32  `json:"gender"`
 	Birth       int64  `json:"birth"`
+	Portrait    string `json:"portrait"`
+	Hometown    string `json:"hometown"`
 	Description string `json:"description"`
-	FatherUid   int64  `json:"father_uid"`
 }
 
 type LoginApiSingUpReq struct {

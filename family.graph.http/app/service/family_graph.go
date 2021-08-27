@@ -61,35 +61,57 @@ func (l *familyGraphService) SingUp(infra *middleware.Infra, req *model.LoginApi
 	return nil
 }
 
-func (*familyGraphService) CreateNode(infra *middleware.Infra, req *model.FamilyGraphAPICreateReq) error {
-	relationDao := dao.NewRelationDao(infra.DB)
-	isExistBaseNode, err := relationDao.IsExistBaseNode(infra)
+func (*familyGraphService) verifyCreateNode(infra *middleware.Infra, req *model.FamilyGraphAPICreateReq) error {
+	graphDao := dao.NewGraphDao(infra.DB)
+
+	switch req.Option {
+	case model.OptionAddBaseNode:
+		nodes, err := graphDao.NodeByFamilyId(infra, req.FamilyId)
+		if err != nil {
+			return err
+		}
+		if len(nodes) > 0 {
+			return errorenum.ErrorRepetitionCrateBaseNode
+		}
+	case model.OptionAddFatherNode:
+		curNode, err := graphDao.NodeByIds(infra, req.CurrentNode)
+		if err != nil {
+			return err
+		}
+
+		if curNode.FatherNode != 0 {
+			return errorenum.ErrorExistFatherNode
+		}
+	case model.OptionAddChildNode:
+		if len(req.Name) == 0 {
+			return errorenum.ErrorInvalidArgumentName
+		}
+	case model.OptionAddSpouseNode:
+		if req.CurrentNode == 0 {
+			return errorenum.ErrorCurrentParamsNode
+		}
+		if len(req.Name) == 0 {
+			return errorenum.ErrorInvalidArgumentName
+		}
+	}
+
+	return nil
+}
+
+func (g *familyGraphService) CreateNode(infra *middleware.Infra, req *model.FamilyGraphAPICreateReq) error {
+	err := g.verifyCreateNode(infra, req)
 	if err != nil {
 		return err
 	}
-	if req.FatherUid == 0 && isExistBaseNode {
-		return errorenum.ErrorFatherUidEmpty
-	}
 
-	pfUpdateField := new(userdbrpc.ProfileUpdateField)
-	pfUpdateField.Passport = &req.Passport
-	pfUpdateField.Name = &req.Name
-	pfUpdateField.Gender = &req.Gender
-	pfUpdateField.Birth = &req.Birth
-	pfUpdateField.Description = &req.Description
-	pf, err := userdbrpc.UpsertProfile(infra.BaseInfra, pfUpdateField)
+	graphDao := dao.NewGraphDao(infra.DB)
+	index, err := graphDao.GetIndex(infra, req.FatherNode)
 	if err != nil {
 		return err
 	}
 
-	index, err := relationDao.GetIndex(infra, req.FatherUid)
-	if err != nil {
-		return err
-	}
-
-	relation := new(inner.MemberRelationModel)
-	relation.Uid = pf.Uid
-	relation.FatherUid = req.FatherUid
+	relation := new(inner.FamilyGraphModel)
+	relation.FatherNode = req.FatherNode
 	relation.Index = index + 1
-	return relationDao.Save(infra, []*inner.MemberRelationModel{relation})
+	return graphDao.Save(infra, []*inner.FamilyGraphModel{relation})
 }

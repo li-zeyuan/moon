@@ -39,7 +39,7 @@ func (d *FamilyDao) OneById(infra *middleware.Infra, id int64) (*inner.FamilyMod
 	err := d.db.Table(inner.TableNameFamily).
 		Where(fmt.Sprintf("%s = ?", basemodel.ColumnId), id).
 		Where(fmt.Sprintf("%s is null", basemodel.ColumnDeleteAt)).
-		Find(m).Error
+		First(m).Error
 	if err != nil {
 		infra.Log.Error("get family by id error: ", err)
 		return nil, err

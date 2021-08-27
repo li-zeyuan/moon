@@ -8,17 +8,17 @@ import (
 	"gorm.io/gorm"
 )
 
-type FamilyMemberDao struct {
+type MemberDao struct {
 	db *gorm.DB
 }
 
-func NewFamilyMemberDao(db *gorm.DB) *FamilyMemberDao {
-	return &FamilyMemberDao{
+func NewMemberDao(db *gorm.DB) *MemberDao {
+	return &MemberDao{
 		db: db,
 	}
 }
 
-func (d *FamilyMemberDao) OneByUid(infra *middleware.Infra, uid int64) (*inner.FamilyMemberModel, error) {
+func (d *MemberDao) OneByUid(infra *middleware.Infra, uid int64) (*inner.FamilyMemberModel, error) {
 	m := new(inner.FamilyMemberModel)
 	err := d.db.Table(inner.TableNameFamilyMember).
 		Where(fmt.Sprintf("%s = ?", inner.ColumnFamilyMemberUid), uid).
@@ -32,7 +32,7 @@ func (d *FamilyMemberDao) OneByUid(infra *middleware.Infra, uid int64) (*inner.F
 	return m, nil
 }
 
-func (d *FamilyMemberDao) Save(infra *middleware.Infra, models []*inner.FamilyMemberModel) error {
+func (d *MemberDao) Save(infra *middleware.Infra, models []*inner.FamilyMemberModel) error {
 	if len(models) == 0 {
 		return nil
 	}
@@ -47,7 +47,7 @@ func (d *FamilyMemberDao) Save(infra *middleware.Infra, models []*inner.FamilyMe
 	return nil
 }
 
-func (d *FamilyMemberDao) Del(infra *middleware.Infra, uid, familyId int64) error {
+func (d *MemberDao) Del(infra *middleware.Infra, uid, familyId int64) error {
 	err := d.db.Table(inner.TableNameFamilyMember).
 		Where(fmt.Sprintf("%s = ?", inner.ColumnFamilyMemberUid), uid).
 		Where(fmt.Sprintf("%s = ?", inner.ColumnFamilyMemberFamilyId), familyId).

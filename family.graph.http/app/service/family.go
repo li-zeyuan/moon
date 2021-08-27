@@ -15,7 +15,7 @@ type familyService struct{}
 
 func (*familyService) Create(infra *middleware.Infra, req *model.FamilyAPICreateReq) error {
 	familyDao := dao.NewFamilyDao(infra.DB)
-	familyMemberDao := dao.NewFamilyMemberDao(infra.DB)
+	familyMemberDao := dao.NewMemberDao(infra.DB)
 	existFMember, err := familyMemberDao.OneByUid(infra, req.Uid)
 	if err != nil {
 		return err
@@ -56,7 +56,7 @@ func (*familyService) Join(infra *middleware.Infra, req *model.FamilyAPIJoinReq)
 		return errorenum.ErrorNotExistFamily
 	}
 
-	familyMemberDao := dao.NewFamilyMemberDao(infra.DB)
+	familyMemberDao := dao.NewMemberDao(infra.DB)
 	familyMember := new(inner.FamilyMemberModel)
 	familyMember.Uid = req.Uid
 	familyMember.FamilyId = req.FamilyId
@@ -74,6 +74,6 @@ func (*familyService) Quit(infra *middleware.Infra, req *model.FamilyAPIQuitReq)
 		return errorenum.ErrorNotExistFamily
 	}
 
-	familyMemberDao := dao.NewFamilyMemberDao(infra.DB)
+	familyMemberDao := dao.NewMemberDao(infra.DB)
 	return familyMemberDao.Del(infra, req.Uid, req.FamilyId)
 }

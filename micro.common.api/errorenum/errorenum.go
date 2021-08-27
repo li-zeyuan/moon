@@ -18,7 +18,8 @@ func (err ErrorCode) HasError() bool {
 
 // common
 var (
-	ErrorInvalidArgument = ErrorCode{Code: 1, Msg: "参数错误"}
+	ErrorInvalidArgument     = ErrorCode{Code: 1, Msg: "参数错误"}
+	ErrorInvalidArgumentName = ErrorCode{Code: 2, Msg: "name参数错误"}
 )
 
 // login
@@ -31,7 +32,10 @@ var (
 
 // family_graph
 var (
-	ErrorFatherUidEmpty    = ErrorCode{Code: 300, Msg: "father uid should not empty"}
-	ErrorExistFamilyMember = ErrorCode{Code: 301, Msg: "uid exist family member"}
-	ErrorNotExistFamily    = ErrorCode{Code: 301, Msg: "not exist family"}
+	ErrorFatherUidEmpty          = ErrorCode{Code: 300, Msg: "father uid should not empty"}
+	ErrorExistFamilyMember       = ErrorCode{Code: 301, Msg: "uid exist family member"}
+	ErrorNotExistFamily          = ErrorCode{Code: 301, Msg: "not exist family"}
+	ErrorCurrentParamsNode       = ErrorCode{Code: 302, Msg: "current node parameter error"}
+	ErrorRepetitionCrateBaseNode = ErrorCode{Code: 303, Msg: "exist base node"}
+	ErrorExistFatherNode         = ErrorCode{Code: 303, Msg: "exist father node"}
 )
