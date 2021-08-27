@@ -9,12 +9,13 @@ const (
 
 type FamilyGraphAPICreateReq struct {
 	Option      int    `json:"option" validate:"oneof=1 2 3 4"` // 1-添加跟节点；2-添加父节点；3-添加孩子节点；4添加配偶节点
-	FamilyId    int64  `json:"family_id" validate:"len=18"`
+	FamilyId    int64  `json:"family_id" validate:"gt=0"`
 	CurrentNode int64  `json:"current_node"`
 	FatherNode  int64  `json:"father_node"`
 	Name        string `json:"name"`
-	Gender      int32  `json:"gender"`
-	Birth       int64  `json:"birth"`
+	Gender      int    `json:"gender"`
+	Birth       string `json:"birth"`
+	DeathTime   string `json:"death_time"`
 	Portrait    string `json:"portrait"`
 	Hometown    string `json:"hometown"`
 	Description string `json:"description"`

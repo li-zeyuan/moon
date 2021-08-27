@@ -19,7 +19,7 @@ var FamilyGraph = familyGraphService{}
 
 type familyGraphService struct{}
 
-func (l *familyGraphService) VerifySingUp(infra *middleware.Infra, req *model.LoginApiSingUpReq) error {
+func (g *familyGraphService) VerifySingUp(infra *middleware.Infra, req *model.LoginApiSingUpReq) error {
 	if isLetterOrDigit, _ := regexp.MatchString(`^[A-Za-z0-9]{1,16}$`, req.Passport); !isLetterOrDigit {
 		return errorenum.ErrorPassportLetterOrDigit
 	}
@@ -43,7 +43,7 @@ func (l *familyGraphService) VerifySingUp(infra *middleware.Infra, req *model.Lo
 	return nil
 }
 
-func (l *familyGraphService) SingUp(infra *middleware.Infra, req *model.LoginApiSingUpReq) error {
+func (g *familyGraphService) SingUp(infra *middleware.Infra, req *model.LoginApiSingUpReq) error {
 	pf := new(profile.Profile)
 	pf.Uid = sequence.NewID()
 	pf.Name = req.Name
@@ -61,7 +61,7 @@ func (l *familyGraphService) SingUp(infra *middleware.Infra, req *model.LoginApi
 	return nil
 }
 
-func (*familyGraphService) verifyCreateNode(infra *middleware.Infra, req *model.FamilyGraphAPICreateReq) error {
+func (g *familyGraphService) verifyCreateNode(infra *middleware.Infra, req *model.FamilyGraphAPICreateReq) error {
 	graphDao := dao.NewGraphDao(infra.DB)
 
 	switch req.Option {
@@ -105,13 +105,30 @@ func (g *familyGraphService) CreateNode(infra *middleware.Infra, req *model.Fami
 	}
 
 	graphDao := dao.NewGraphDao(infra.DB)
-	index, err := graphDao.GetIndex(infra, req.FatherNode)
-	if err != nil {
-		return err
+	switch req.Option {
+	case model.OptionAddBaseNode:
+		baseNode := new(inner.FamilyGraphModel)
+		baseNode.ID = sequence.NewID()
+		baseNode.FamilyId = req.FamilyId
+		baseNode.Index = 1
+		baseNode.Name = req.Name
+		baseNode.Gender = req.Gender
+		baseNode.Birth, _ = utils.ParseDay(req.Birth)
+		baseNode.DeathTime, _ = utils.ParseDay(req.Birth)
+		baseNode.Portrait = req.Portrait
+		baseNode.Hometown = req.Hometown
+		baseNode.Description = req.Description
+		return graphDao.Save(infra, []*inner.FamilyGraphModel{baseNode})
+	case model.OptionAddFatherNode:
+	case model.OptionAddChildNode:
+	case model.OptionAddSpouseNode:
+
 	}
 
-	relation := new(inner.FamilyGraphModel)
-	relation.FatherNode = req.FatherNode
-	relation.Index = index + 1
-	return graphDao.Save(infra, []*inner.FamilyGraphModel{relation})
+	//index, err := graphDao.GetIndex(infra, req.FatherNode)
+	//if err != nil {
+	//	return err
+	//}
+
+	return nil
 }
