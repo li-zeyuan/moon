@@ -11,3 +11,8 @@ type FamilyAPIJoinReq struct {
 	Uid      int64 `json:"uid" validate:"gt=0"`
 	FamilyId int64 `json:"family_id" validate:"gt=0"`
 }
+
+type FamilyAPIQuitReq struct {
+	Uid      int64 `json:"uid" validate:"gt=0"`
+	FamilyId int64 `json:"family_id" validate:"gt=0"`
+}

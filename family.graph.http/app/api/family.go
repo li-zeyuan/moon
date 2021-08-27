@@ -51,3 +51,22 @@ func (l *familyAPI) Join(w http.ResponseWriter, r *http.Request) {
 
 	response.Json(w, http.StatusOK, nil)
 }
+
+func (l *familyAPI) Quit(w http.ResponseWriter, r *http.Request) {
+	infra := middleware.GetInfra(r.Context())
+
+	apiReq := new(model.FamilyAPIQuitReq)
+	err := request.ParseBody(r, apiReq)
+	if err != nil {
+		response.AbortWithStatusJSON(w, http.StatusOK, err)
+		return
+	}
+
+	err = service.Family.Quit(infra, apiReq)
+	if err != nil {
+		response.AbortWithStatusJSON(w, http.StatusOK, err)
+		return
+	}
+
+	response.Json(w, http.StatusOK, nil)
+}

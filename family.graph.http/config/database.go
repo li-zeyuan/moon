@@ -27,5 +27,5 @@ func InitDatabase(conf *Config) *gorm.DB {
 	sqlDb.SetMaxIdleConns(conf.DB.MaxConn)
 	sqlDb.SetMaxOpenConns(conf.DB.MaxOpen)
 	sqlDb.SetConnMaxIdleTime(time.Duration(conf.DB.Timeout))
-	return db
+	return db.Debug()
 }

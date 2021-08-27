@@ -46,3 +46,16 @@ func (d *FamilyMemberDao) Save(infra *middleware.Infra, models []*inner.FamilyMe
 
 	return nil
 }
+
+func (d *FamilyMemberDao) Del(infra *middleware.Infra, uid, familyId int64) error {
+	err := d.db.Table(inner.TableNameFamilyMember).
+		Where(fmt.Sprintf("%s = ?", inner.ColumnFamilyMemberUid), uid).
+		Where(fmt.Sprintf("%s = ?", inner.ColumnFamilyMemberFamilyId), familyId).
+		Delete(&inner.FamilyMemberModel{}).Error
+	if err != nil {
+		infra.Log.Error("del family member error: ", err)
+		return err
+	}
+
+	return nil
+}

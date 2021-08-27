@@ -63,3 +63,17 @@ func (*familyService) Join(infra *middleware.Infra, req *model.FamilyAPIJoinReq)
 	familyMember.Option = inner.OptionJoin
 	return familyMemberDao.Save(infra, []*inner.FamilyMemberModel{familyMember})
 }
+
+func (*familyService) Quit(infra *middleware.Infra, req *model.FamilyAPIQuitReq) error {
+	familyDao := dao.NewFamilyDao(infra.DB)
+	f, err := familyDao.OneById(infra, req.FamilyId)
+	if err != nil {
+		return err
+	}
+	if f.ID == 0 {
+		return errorenum.ErrorNotExistFamily
+	}
+
+	familyMemberDao := dao.NewFamilyMemberDao(infra.DB)
+	return familyMemberDao.Del(infra, req.Uid, req.FamilyId)
+}

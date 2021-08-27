@@ -13,6 +13,7 @@ const (
 	ColumnFamilyMemberOption   = "option"
 )
 
+// FamilyMemberModel 家族成员：即可以看到族谱图的成员
 type FamilyMemberModel struct {
 	model.BaseModel
 	Uid      int64 `gorm:"index:idx_uid"`       // 创建人id
