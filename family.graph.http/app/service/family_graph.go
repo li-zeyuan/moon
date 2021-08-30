@@ -179,3 +179,24 @@ func saveNodeByOpt(infra *middleware.Infra, nodeId int64, req *model.FamilyGraph
 
 	return graphDao.Save(infra, []*inner.FamilyGraphModel{node})
 }
+
+func (g *familyGraphService) DetailNode(infra *middleware.Infra, req *model.FamilyGraphAPIDetailReq) (*model.FamilyGraphAPIDetailResp, error) {
+	graphDao := dao.NewGraphDao(infra.DB)
+	curNode, err := graphDao.NodeByIds(infra, req.Node)
+	if err != nil {
+		return nil, err
+	}
+
+	resp := new(model.FamilyGraphAPIDetailResp)
+	resp.Node = curNode.ID
+	resp.Name = curNode.Name
+	resp.IndexNum = curNode.IndexNum
+	resp.Gender = curNode.Gender
+	resp.Birth = utils.Time2TimeStamp(curNode.Birth)
+	resp.DeathTime = utils.Time2TimeStamp(curNode.DeathTime)
+	resp.Portrait = curNode.Portrait
+	resp.Hometown = curNode.Hometown
+	resp.Description = curNode.Description
+
+	return resp, nil
+}

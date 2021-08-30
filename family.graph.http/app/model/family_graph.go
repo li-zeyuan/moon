@@ -21,6 +21,22 @@ type FamilyGraphAPICreateReq struct {
 	Description string `json:"description"`
 }
 
+type FamilyGraphAPIDetailReq struct {
+	Node int64 `json:"node" validate:"gt=0"`
+}
+
+type FamilyGraphAPIDetailResp struct {
+	Node        int64  `json:"node"`
+	Name        string `json:"name"`
+	IndexNum    int    `json:"index_num"`
+	Gender      int    `json:"gender"`
+	Birth       int64  `json:"birth"`
+	DeathTime   int64  `json:"death_time"`
+	Portrait    string `json:"portrait"`
+	Hometown    string `json:"hometown"`
+	Description string `json:"description"`
+}
+
 type LoginApiSingUpReq struct {
 	Passport  string `json:"passport"`
 	Password  string `json:"password"`

@@ -16,9 +16,10 @@ func Init(srv *http.ServeMux) {
 	r.Add("/api/family/create", http.HandlerFunc(api.Family.Create))
 	r.Add("/api/family/join", http.HandlerFunc(api.Family.Join))
 	r.Add("/api/family/quit", http.HandlerFunc(api.Family.Quit))
+
 	r.Add("/api/family_graph/create", http.HandlerFunc(api.FamilyGraph.Create))
-	r.Add("/api/family_graph/update", http.HandlerFunc(api.FamilyGraph.Update))
 	r.Add("/api/family_graph/detail", http.HandlerFunc(api.FamilyGraph.Detail))
+	r.Add("/api/family_graph/update", http.HandlerFunc(api.FamilyGraph.Update))
 	r.Add("/api/family_graph/delete", http.HandlerFunc(api.FamilyGraph.Delete))
 	r.Add("/api/family_graph/graph", http.HandlerFunc(api.FamilyGraph.Graph))
 
