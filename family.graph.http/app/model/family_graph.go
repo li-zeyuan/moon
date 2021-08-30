@@ -14,8 +14,8 @@ type FamilyGraphAPICreateReq struct {
 	FatherNode  int64  `json:"father_node"`
 	Name        string `json:"name"`
 	Gender      int    `json:"gender"`
-	Birth       string `json:"birth"`
-	DeathTime   string `json:"death_time"`
+	Birth       int64  `json:"birth"`
+	DeathTime   int64  `json:"death_time"`
 	Portrait    string `json:"portrait"`
 	Hometown    string `json:"hometown"`
 	Description string `json:"description"`

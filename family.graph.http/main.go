@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"syscall"
 
 	"github.com/li-zeyuan/micro/family.graph.http/boot"
 	"github.com/li-zeyuan/micro/family.graph.http/config"
@@ -24,10 +25,10 @@ func main() {
 	router.Init(mux)
 	srv.Handler = mux
 
-	idleConnsClosed := make(chan struct{})
+	idleConClosed := make(chan struct{})
 	go func() {
 		sigint := make(chan os.Signal, 1)
-		signal.Notify(sigint, os.Interrupt, os.Kill)
+		signal.Notify(sigint, os.Interrupt, syscall.SIGTERM)
 		<-sigint
 
 		// We received an interrupt signal, shut down.
@@ -35,7 +36,7 @@ func main() {
 			// Error from closing listeners, or context timeout:
 			log.Printf("HTTP server Shutdown: %v", err)
 		}
-		close(idleConnsClosed)
+		close(idleConClosed)
 	}()
 
 	logger.DefaultLogger.Infof("server: %s, port: %s", config.Conf.Server.ServiceName, config.Conf.Server.Port)
@@ -43,5 +44,5 @@ func main() {
 		logger.DefaultLogger.Fatalf("HTTP server ListenAndServe: %v", err)
 	}
 
-	<-idleConnsClosed
+	<-idleConClosed
 }

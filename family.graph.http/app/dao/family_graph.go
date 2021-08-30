@@ -47,23 +47,24 @@ func (d *GraphDao) Save(infra *middleware.Infra, models []*inner.FamilyGraphMode
 	return nil
 }
 
-func (d *GraphDao) GetIndex(infra *middleware.Infra, fatherUid int64) (int, error) {
-	if fatherUid == 0 {
+func (d *GraphDao) GetIndex(infra *middleware.Infra, fatherNode int64) (int, error) {
+	if fatherNode == 0 {
 		return 0, nil
 	}
 
 	m := new(inner.IndexObj)
 	err := d.db.Table(inner.TableFamilyGraph).
 		Select(inner.ColumnGraphIndex).
-		Where(fmt.Sprintf("%s=?", inner.ColumnGraphFatherUid), fatherUid).
-		//Order(fmt.Sprintf("%s desc", inner.ColumnIndex)).
-		Last(m).Error
+		Where(fmt.Sprintf("%s=?", inner.ColumnGraphFatherUid), fatherNode).
+		Order(fmt.Sprintf("%s desc", inner.ColumnGraphIndex)).
+		Limit(1).
+		Find(m).Error
 	if err != nil {
 		infra.Log.Error("get member relation index error: ", err)
 		return 0, err
 	}
 
-	return m.Index, nil
+	return m.IndexNum, nil
 }
 
 func (d *GraphDao) NodeByIds(infra *middleware.Infra, id int64) (*inner.FamilyGraphModel, error) {
@@ -71,7 +72,7 @@ func (d *GraphDao) NodeByIds(infra *middleware.Infra, id int64) (*inner.FamilyGr
 	err := d.db.Table(inner.TableFamilyGraph).
 		Where(fmt.Sprintf("%s = ?", basemodel.ColumnId), id).
 		Where("deleted_at is null").
-		Find(&m).Error
+		First(&m).Error
 	if err != nil {
 		infra.Log.Error("get node by id error: ", err)
 		return nil, err
@@ -92,4 +93,21 @@ func (d *GraphDao) NodeByFamilyId(infra *middleware.Infra, familyId int64) ([]*i
 	}
 
 	return models, nil
+}
+
+func (d *GraphDao) UpdateByCurrentNode(infra *middleware.Infra, currentNode int64, updateColumnMap map[string]interface{}) error {
+	if len(updateColumnMap) == 0 {
+		return nil
+	}
+
+	err := d.db.Table(inner.TableFamilyGraph).
+		Where(fmt.Sprintf("%s = ?", basemodel.ColumnId), currentNode).
+		Where("deleted_at is null").
+		UpdateColumns(updateColumnMap).Error
+	if err != nil {
+		infra.Log.Error("update by current node error: ", err)
+		return err
+	}
+
+	return nil
 }

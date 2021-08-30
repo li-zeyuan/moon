@@ -83,6 +83,9 @@ func (g *familyGraphService) verifyCreateNode(infra *middleware.Infra, req *mode
 			return errorenum.ErrorExistFatherNode
 		}
 	case model.OptionAddChildNode:
+		if req.CurrentNode == 0 {
+			return errorenum.ErrorCurrentParamsNode
+		}
 		if len(req.Name) == 0 {
 			return errorenum.ErrorInvalidArgumentName
 		}
@@ -107,28 +110,72 @@ func (g *familyGraphService) CreateNode(infra *middleware.Infra, req *model.Fami
 	graphDao := dao.NewGraphDao(infra.DB)
 	switch req.Option {
 	case model.OptionAddBaseNode:
-		baseNode := new(inner.FamilyGraphModel)
-		baseNode.ID = sequence.NewID()
-		baseNode.FamilyId = req.FamilyId
-		baseNode.Index = 1
-		baseNode.Name = req.Name
-		baseNode.Gender = req.Gender
-		baseNode.Birth, _ = utils.ParseDay(req.Birth)
-		baseNode.DeathTime, _ = utils.ParseDay(req.Birth)
-		baseNode.Portrait = req.Portrait
-		baseNode.Hometown = req.Hometown
-		baseNode.Description = req.Description
-		return graphDao.Save(infra, []*inner.FamilyGraphModel{baseNode})
+		err = saveNodeByOpt(infra, sequence.NewID(), req)
+		if err != nil {
+			return err
+		}
 	case model.OptionAddFatherNode:
-	case model.OptionAddChildNode:
-	case model.OptionAddSpouseNode:
+		fatherNode := req.FatherNode
+		if req.FatherNode == 0 {
+			fatherNode = sequence.NewID()
+		}
 
+		err = saveNodeByOpt(infra, fatherNode, req)
+		if err != nil {
+			return err
+		}
+
+		updateColumnMap := make(map[string]interface{})
+		updateColumnMap[inner.ColumnGraphFatherUid] = fatherNode
+		err = graphDao.UpdateByCurrentNode(infra, req.CurrentNode, updateColumnMap)
+		if err != nil {
+			return err
+		}
+	case model.OptionAddChildNode:
+		err = saveNodeByOpt(infra, sequence.NewID(), req)
+		if err != nil {
+			return err
+		}
+	case model.OptionAddSpouseNode:
+		spouseNode := sequence.NewID()
+		err = saveNodeByOpt(infra, spouseNode, req)
+		if err != nil {
+			return err
+		}
+
+		updateColumnMap := make(map[string]interface{})
+		updateColumnMap[inner.ColumnGraphSpouseUid] = spouseNode
+		err = graphDao.UpdateByCurrentNode(infra, req.CurrentNode, updateColumnMap)
+		if err != nil {
+			return err
+		}
 	}
 
-	//index, err := graphDao.GetIndex(infra, req.FatherNode)
-	//if err != nil {
-	//	return err
-	//}
-
 	return nil
+}
+
+func saveNodeByOpt(infra *middleware.Infra, nodeId int64, req *model.FamilyGraphAPICreateReq) error {
+	graphDao := dao.NewGraphDao(infra.DB)
+
+	node := new(inner.FamilyGraphModel)
+	node.ID = nodeId
+	node.FamilyId = req.FamilyId
+	node.Name = req.Name
+	node.Gender = req.Gender
+	node.Birth = utils.TimeStamp2Time(req.Birth)
+	node.DeathTime = utils.TimeStamp2Time(req.DeathTime)
+	node.Portrait = req.Portrait
+	node.Hometown = req.Hometown
+	node.Description = req.Description
+	if req.Option == model.OptionAddChildNode {
+		index, err := graphDao.GetIndex(infra, req.CurrentNode)
+		if err != nil {
+			return err
+		}
+
+		node.IndexNum = index + 1
+		node.FatherNode = req.CurrentNode
+	}
+
+	return graphDao.Save(infra, []*inner.FamilyGraphModel{node})
 }
