@@ -18,16 +18,16 @@ func (err ErrorCode) HasError() bool {
 
 // common
 var (
-	ErrorInvalidArgument     = ErrorCode{Code: 1, Msg: "参数错误"}
-	ErrorInvalidArgumentName = ErrorCode{Code: 2, Msg: "name参数错误"}
+	ErrorInvalidArgument     = ErrorCode{Code: 1, Msg: "invalid params"}
+	ErrorInvalidArgumentName = ErrorCode{Code: 2, Msg: "name invalid params"}
 )
 
 // login
 var (
-	ErrorPassportExist         = ErrorCode{Code: 200, Msg: "账号已存在"}
-	ErrorPassportLetterOrDigit = ErrorCode{Code: 201, Msg: "账号只能是数字或字母"}
-	ErrorPasswordLength        = ErrorCode{Code: 202, Msg: "两次输入密码输入不一致"}
-	ErrorPasswordLetterOrDigit = ErrorCode{Code: 203, Msg: "密码只能是数字或字母"}
+	ErrorPassportExist         = ErrorCode{Code: 200, Msg: "passport exist"}
+	ErrorPassportLetterOrDigit = ErrorCode{Code: 201, Msg: "passport should letter or digit"}
+	ErrorPasswordInConformity  = ErrorCode{Code: 202, Msg: "password import in_conformity"}
+	ErrorPasswordLetterOrDigit = ErrorCode{Code: 203, Msg: "password should letter or digit"}
 )
 
 // family_graph

@@ -21,7 +21,7 @@ func (l *loginService) VerifySingUp(infra *middleware.Infra, req *model.LoginApi
 	}
 
 	if len(req.Password) > 8 || len(req.Password) == 0 || req.Password != req.Password2 {
-		return errorenum.ErrorPasswordLength
+		return errorenum.ErrorPasswordInConformity
 	}
 	if isLetterOrDigit, _ := regexp.MatchString(`^[A-Za-z0-9]{1,16}$`, req.Password); !isLetterOrDigit {
 		return errorenum.ErrorPasswordLetterOrDigit
