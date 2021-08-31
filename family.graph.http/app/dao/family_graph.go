@@ -23,6 +23,7 @@ func NewGraphDao(db *gorm.DB) *GraphDao {
 func (d *GraphDao) IsExistBaseNode(infra *middleware.Infra) (bool, error) {
 	var amount int64
 	err := d.db.Table(inner.TableFamilyGraph).
+		Where("deleted_at is null").
 		Count(&amount).Error
 	if err != nil {
 		infra.Log.Error("check if exist base note error: ", err)
@@ -47,18 +48,19 @@ func (d *GraphDao) Save(infra *middleware.Infra, models []*inner.FamilyGraphMode
 	return nil
 }
 
-func (d *GraphDao) GetIndex(infra *middleware.Infra, fatherNode int64) (int, error) {
-	if fatherNode == 0 {
+func (d *GraphDao) GetIndex(infra *middleware.Infra, currentNode int64) (int, error) {
+	if currentNode == 0 {
 		return 0, nil
 	}
 
 	m := new(inner.IndexObj)
 	err := d.db.Table(inner.TableFamilyGraph).
 		Select(inner.ColumnGraphIndex).
-		Where(fmt.Sprintf("%s=?", inner.ColumnGraphFatherUid), fatherNode).
+		Where(fmt.Sprintf("%s=?", inner.ColumnGraphFatherUid), currentNode).
+		Where("deleted_at is null").
 		Order(fmt.Sprintf("%s desc", inner.ColumnGraphIndex)).
 		Limit(1).
-		Find(m).Error
+		Find(m).Error // 没有not row error
 	if err != nil {
 		infra.Log.Error("get member relation index error: ", err)
 		return 0, err

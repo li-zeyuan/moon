@@ -9,11 +9,18 @@ import (
 const (
 	TableFamilyGraph = "family_graph"
 
-	ColumnGraphUid       = "uid"
-	ColumnGraphFamilyID  = "family_id"
-	ColumnGraphFatherUid = "father_node"
-	ColumnGraphSpouseUid = "spouse_node"
-	ColumnGraphIndex     = "index_num"
+	ColumnGraphUid         = "uid"
+	ColumnGraphFamilyID    = "family_id"
+	ColumnGraphFatherUid   = "father_node"
+	ColumnGraphSpouseUid   = "spouse_node"
+	ColumnGraphIndex       = "index_num"
+	ColumnGraphName        = "name"
+	ColumnGraphGender      = "gender"
+	ColumnGraphBirth       = "birth"
+	ColumnGraphDeathTime   = "death_time"
+	ColumnGraphPortrait    = "portrait"
+	ColumnGraphHometown    = "hometown"
+	ColumnGraphDescription = "description"
 )
 
 // FamilyGraphModel 族谱图

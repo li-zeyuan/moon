@@ -53,34 +53,43 @@ func (l *familyGraphAPI) Detail(w http.ResponseWriter, r *http.Request) {
 }
 
 func (l *familyGraphAPI) Update(w http.ResponseWriter, r *http.Request) {
-
-}
-
-func (l *familyGraphAPI) Delete(w http.ResponseWriter, r *http.Request) {
-
-}
-
-func (l *familyGraphAPI) Graph(w http.ResponseWriter, r *http.Request) {
 	infra := middleware.GetInfra(r.Context())
 
-	apiReq := new(model.LoginApiSingUpReq)
+	apiReq := new(model.FamilyGraphAPIUpdateReq)
 	err := request.ParseBody(r, apiReq)
 	if err != nil {
 		response.AbortWithStatusJSON(w, http.StatusOK, err)
 		return
 	}
 
-	err = service.FamilyGraph.VerifySingUp(infra, apiReq)
+	err = service.FamilyGraph.UpdateNode(infra, apiReq)
 	if err != nil {
 		response.AbortWithStatusJSON(w, http.StatusOK, err)
 		return
 	}
 
-	err = service.FamilyGraph.SingUp(infra, apiReq)
+	response.Json(w, http.StatusOK, struct{}{})
+}
+
+func (l *familyGraphAPI) Delete(w http.ResponseWriter, r *http.Request) {
+	infra := middleware.GetInfra(r.Context())
+
+	apiReq := new(model.FamilyGraphAPIDelReq)
+	err := request.ParseBody(r, apiReq)
 	if err != nil {
 		response.AbortWithStatusJSON(w, http.StatusOK, err)
 		return
 	}
 
-	response.Json(w, http.StatusOK, nil)
+	err = service.FamilyGraph.DelNode(infra, apiReq)
+	if err != nil {
+		response.AbortWithStatusJSON(w, http.StatusOK, err)
+		return
+	}
+
+	response.Json(w, http.StatusOK, struct{}{})
+}
+
+func (l *familyGraphAPI) Graph(w http.ResponseWriter, r *http.Request) {
+
 }

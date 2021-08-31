@@ -26,15 +26,19 @@ func AbortWithStatusJSON(w http.ResponseWriter, code int, err error) {
 		resp.Msg = errEnum.Msg
 	}
 
-	body, _ := json.Marshal(resp)
-	w.WriteHeader(code)
-	_, _ = w.Write(body)
+	writeResponse(w, code, resp)
 }
 
 func Json(w http.ResponseWriter, code int, data interface{}) {
 	resp := JsonResponse{}
 	resp.Data = data
+
+	writeResponse(w, code, resp)
+}
+
+func writeResponse(w http.ResponseWriter, code int, resp interface{}) {
 	body, _ := json.Marshal(resp)
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(code)
 	_, _ = w.Write(body)
 }

@@ -37,9 +37,17 @@ type FamilyGraphAPIDetailResp struct {
 	Description string `json:"description"`
 }
 
-type LoginApiSingUpReq struct {
-	Passport  string `json:"passport"`
-	Password  string `json:"password"`
-	Password2 string `json:"password2"`
-	Name      string `json:"name"`
+type FamilyGraphAPIUpdateReq struct {
+	Node        int64   `json:"node" validate:"gt=0"`
+	Name        *string `json:"name"`
+	Gender      *int    `json:"gender"`
+	Birth       *int64  `json:"birth"`
+	DeathTime   *int64  `json:"death_time"`
+	Portrait    *string `json:"portrait"`
+	Hometown    *string `json:"hometown"`
+	Description *string `json:"description"`
+}
+
+type FamilyGraphAPIDelReq struct {
+	Node int64 `json:"node" validate:"gt=0"`
 }

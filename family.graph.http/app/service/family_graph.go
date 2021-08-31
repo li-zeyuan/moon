@@ -1,65 +1,21 @@
 package service
 
 import (
-	"regexp"
+	"time"
 
 	"github.com/li-zeyuan/micro/family.graph.http/app/dao"
 	"github.com/li-zeyuan/micro/family.graph.http/app/model"
 	"github.com/li-zeyuan/micro/family.graph.http/app/model/inner"
-	"github.com/li-zeyuan/micro/family.graph.http/config"
 	"github.com/li-zeyuan/micro/family.graph.http/library/middleware"
 	"github.com/li-zeyuan/micro/micro.common.api/errorenum"
+	basemodel "github.com/li-zeyuan/micro/micro.common.api/model"
 	"github.com/li-zeyuan/micro/micro.common.api/sequence"
-	userdbrpc "github.com/li-zeyuan/micro/micro.common.api/server/user.db.rpc"
-	"github.com/li-zeyuan/micro/micro.common.api/server/user.db.rpc/pb/profile"
 	"github.com/li-zeyuan/micro/micro.common.api/utils"
 )
 
 var FamilyGraph = familyGraphService{}
 
 type familyGraphService struct{}
-
-func (g *familyGraphService) VerifySingUp(infra *middleware.Infra, req *model.LoginApiSingUpReq) error {
-	if isLetterOrDigit, _ := regexp.MatchString(`^[A-Za-z0-9]{1,16}$`, req.Passport); !isLetterOrDigit {
-		return errorenum.ErrorPassportLetterOrDigit
-	}
-
-	if len(req.Password) > 8 || len(req.Password) == 0 || req.Password != req.Password2 {
-		return errorenum.ErrorPasswordLength
-	}
-	if isLetterOrDigit, _ := regexp.MatchString(`^[A-Za-z0-9]{1,16}$`, req.Password); !isLetterOrDigit {
-		return errorenum.ErrorPasswordLetterOrDigit
-	}
-
-	// 判断账号是否存在
-	profileMap, err := userdbrpc.GetProfileByPassport(infra.BaseInfra, []string{req.Passport})
-	if err != nil {
-		return err
-	}
-	if len(profileMap) > 0 {
-		return errorenum.ErrorPassportExist
-	}
-
-	return nil
-}
-
-func (g *familyGraphService) SingUp(infra *middleware.Infra, req *model.LoginApiSingUpReq) error {
-	pf := new(profile.Profile)
-	pf.Uid = sequence.NewID()
-	pf.Name = req.Name
-	pf.Passport = req.Passport
-	pf.Password = req.Password
-
-	profileRpcReq := profile.SaveReq{}
-	profileRpcReq.Profiles = append(profileRpcReq.Profiles, pf)
-	profileRpcResp := profile.SaveResp{}
-	err := utils.Invoke(infra.BaseInfra, config.GetServerClient(userdbrpc.ServerNameUserDbRpc).Address, userdbrpc.UrlProfileSave, &profileRpcReq, &profileRpcResp)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
 
 func (g *familyGraphService) verifyCreateNode(infra *middleware.Infra, req *model.FamilyGraphAPICreateReq) error {
 	graphDao := dao.NewGraphDao(infra.DB)
@@ -199,4 +155,58 @@ func (g *familyGraphService) DetailNode(infra *middleware.Infra, req *model.Fami
 	resp.Description = curNode.Description
 
 	return resp, nil
+}
+
+func (g *familyGraphService) UpdateNode(infra *middleware.Infra, req *model.FamilyGraphAPIUpdateReq) error {
+	graphDao := dao.NewGraphDao(infra.DB)
+
+	updateColumnMap := make(map[string]interface{})
+	if req.Name != nil && len(*req.Name) > 0 {
+		updateColumnMap[inner.ColumnGraphName] = *req.Name
+	}
+	if req.Gender != nil && *req.Gender > 0 {
+		updateColumnMap[inner.ColumnGraphGender] = *req.Gender
+	}
+	if req.Birth != nil {
+		updateColumnMap[inner.ColumnGraphBirth] = utils.TimeStamp2Time(*req.Birth)
+	}
+	if req.DeathTime != nil {
+		updateColumnMap[inner.ColumnGraphDeathTime] = utils.TimeStamp2Time(*req.DeathTime)
+	}
+	if req.Portrait != nil {
+		updateColumnMap[inner.ColumnGraphPortrait] = *req.Portrait
+	}
+	if req.Hometown != nil {
+		updateColumnMap[inner.ColumnGraphHometown] = *req.Hometown
+	}
+	if req.Description != nil {
+		updateColumnMap[inner.ColumnGraphDescription] = *req.Description
+	}
+
+	err := graphDao.UpdateByCurrentNode(infra, req.Node, updateColumnMap)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (g *familyGraphService) DelNode(infra *middleware.Infra, req *model.FamilyGraphAPIDelReq) error {
+	graphDao := dao.NewGraphDao(infra.DB)
+	lastIndex, err := graphDao.GetIndex(infra, req.Node)
+	if err != nil {
+		return err
+	}
+	if lastIndex > 0 {
+		return errorenum.ErrorOnlyDelChildNode
+	}
+
+	updateColumnMap := make(map[string]interface{})
+	updateColumnMap[basemodel.ColumnDeleteAt] = time.Now()
+	err = graphDao.UpdateByCurrentNode(infra, req.Node, updateColumnMap)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

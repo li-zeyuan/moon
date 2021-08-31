@@ -38,4 +38,5 @@ var (
 	ErrorCurrentParamsNode       = ErrorCode{Code: 302, Msg: "current node parameter error"}
 	ErrorRepetitionCrateBaseNode = ErrorCode{Code: 303, Msg: "exist base node"}
 	ErrorExistFatherNode         = ErrorCode{Code: 303, Msg: "exist father node"}
+	ErrorOnlyDelChildNode        = ErrorCode{Code: 303, Msg: "delete child node only"}
 )
