@@ -51,3 +51,30 @@ type FamilyGraphAPIUpdateReq struct {
 type FamilyGraphAPIDelReq struct {
 	Node int64 `json:"node" validate:"gt=0"`
 }
+
+type FamilyGraphAPIGraphReq struct {
+	FamilyId int64 `json:"family_id" validate:"gt=0"`
+}
+
+type FamilyGraphNode struct {
+	Node        int64  `json:"node"`
+	Name        string `json:"name"`
+	Gender      int    `json:"gender"`
+	Birth       int64  `json:"birth"`
+	DeathTime   int64  `json:"death_time"`
+	Portrait    string `json:"portrait"`
+	Hometown    string `json:"hometown"`
+	Description string `json:"description"`
+	SpouseNode  int64  `json:"spouse_node"`
+}
+
+type FamilyGraphTree struct {
+	FamilyGraphNode
+	Spouse   []*FamilyGraphNode `json:"spouse"`
+	Children []*FamilyGraphTree `json:"children"`
+}
+
+type FamilyGraphAPIGraphResp struct {
+	FamilyId int64            `json:"family_id"`
+	Graph    *FamilyGraphTree `json:"graph"`
+}

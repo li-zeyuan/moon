@@ -27,6 +27,15 @@ func TestRelationDao_GetIndex(t *testing.T) {
 	t.Log(index)
 }
 
+func TestRelationDao_GraphRootNode(t *testing.T) {
+	infra := middleware.NewInfra(context.Background(), "")
+	familyDao := NewGraphDao(infra.DB)
+
+	root, err := familyDao.GraphRootNode(infra, 320124380004740864)
+	assert.Equal(t, err, nil)
+	t.Log(root)
+}
+
 func TestRelationDao_NodeByIds(t *testing.T) {
 	infra := middleware.NewInfra(context.Background(), "")
 	familyDao := NewGraphDao(infra.DB)

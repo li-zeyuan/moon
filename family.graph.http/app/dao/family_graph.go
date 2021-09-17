@@ -20,17 +20,20 @@ func NewGraphDao(db *gorm.DB) *GraphDao {
 	}
 }
 
-func (d *GraphDao) IsExistBaseNode(infra *middleware.Infra) (bool, error) {
-	var amount int64
+func (d *GraphDao) GraphRootNode(infra *middleware.Infra, familyId int64) (*inner.FamilyGraphModel, error) {
+	root := new(inner.FamilyGraphModel)
 	err := d.db.Table(inner.TableFamilyGraph).
 		Where("deleted_at is null").
-		Count(&amount).Error
+		Where("family_id = ?", familyId).
+		Where("father_node = ?", 0).
+		Where("is_spouse = ?", false).
+		First(root).Error
 	if err != nil {
-		infra.Log.Error("check if exist base note error: ", err)
-		return false, err
+		infra.Log.Error("get graph root node error: ", err)
+		return nil, err
 	}
 
-	return amount == 0, nil
+	return root, nil
 }
 
 func (d *GraphDao) Save(infra *middleware.Infra, models []*inner.FamilyGraphModel) error {
@@ -91,6 +94,22 @@ func (d *GraphDao) NodeByFamilyId(infra *middleware.Infra, familyId int64) ([]*i
 		Find(&models).Error
 	if err != nil {
 		infra.Log.Error("get node by family id error: ", err)
+		return nil, err
+	}
+
+	return models, nil
+}
+
+func (d *GraphDao) ChildNodeByFamilyId(infra *middleware.Infra, rootNode, familyId int64) ([]*inner.FamilyGraphModel, error) {
+	models := make([]*inner.FamilyGraphModel, 0)
+	err := d.db.Table(inner.TableFamilyGraph).
+		Where(fmt.Sprintf("%s = ?", inner.ColumnGraphFamilyID), familyId).
+		Where("id != ?", rootNode).
+		Where("deleted_at is null").
+		Order("index_num asc").
+		Find(&models).Error
+	if err != nil {
+		infra.Log.Error("get child node by family id error: ", err)
 		return nil, err
 	}
 

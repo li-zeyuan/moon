@@ -91,5 +91,20 @@ func (l *familyGraphAPI) Delete(w http.ResponseWriter, r *http.Request) {
 }
 
 func (l *familyGraphAPI) Graph(w http.ResponseWriter, r *http.Request) {
+	infra := middleware.GetInfra(r.Context())
 
+	apiReq := new(model.FamilyGraphAPIGraphReq)
+	err := request.ParseBody(r, apiReq)
+	if err != nil {
+		response.AbortWithStatusJSON(w, http.StatusOK, err)
+		return
+	}
+
+	resp, err := service.FamilyGraph.GetGraph(infra, apiReq)
+	if err != nil {
+		response.AbortWithStatusJSON(w, http.StatusOK, err)
+		return
+	}
+
+	response.Json(w, http.StatusOK, resp)
 }

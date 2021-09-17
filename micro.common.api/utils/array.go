@@ -13,3 +13,13 @@ func UniqueArray(iArray []int64) []int64 {
 
 	return result
 }
+
+func IsInArray(item int, array []int) bool {
+	for _, arrayItem := range array {
+		if arrayItem == item {
+			return true
+		}
+	}
+
+	return false
+}

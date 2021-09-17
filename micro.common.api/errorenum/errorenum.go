@@ -34,9 +34,10 @@ var (
 var (
 	ErrorFatherUidEmpty          = ErrorCode{Code: 300, Msg: "father uid should not empty"}
 	ErrorExistFamilyMember       = ErrorCode{Code: 301, Msg: "uid exist family member"}
-	ErrorNotExistFamily          = ErrorCode{Code: 301, Msg: "not exist family"}
-	ErrorCurrentParamsNode       = ErrorCode{Code: 302, Msg: "current node parameter error"}
-	ErrorRepetitionCrateBaseNode = ErrorCode{Code: 303, Msg: "exist base node"}
-	ErrorExistFatherNode         = ErrorCode{Code: 303, Msg: "exist father node"}
-	ErrorOnlyDelChildNode        = ErrorCode{Code: 303, Msg: "delete child node only"}
+	ErrorNotExistFamily          = ErrorCode{Code: 302, Msg: "not exist family"}
+	ErrorCurrentParamsNode       = ErrorCode{Code: 303, Msg: "current node parameter error"}
+	ErrorRepetitionCrateRootNode = ErrorCode{Code: 304, Msg: "exist root node"}
+	ErrorNotExistRootNode        = ErrorCode{Code: 305, Msg: "not exist root node"}
+	ErrorExistFatherNode         = ErrorCode{Code: 306, Msg: "exist father node"}
+	ErrorOnlyDelChildNode        = ErrorCode{Code: 307, Msg: "delete child node only"}
 )

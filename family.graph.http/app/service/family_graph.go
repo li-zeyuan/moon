@@ -27,7 +27,7 @@ func (g *familyGraphService) verifyCreateNode(infra *middleware.Infra, req *mode
 			return err
 		}
 		if len(nodes) > 0 {
-			return errorenum.ErrorRepetitionCrateBaseNode
+			return errorenum.ErrorRepetitionCrateRootNode
 		}
 	case model.OptionAddFatherNode:
 		curNode, err := graphDao.NodeByIds(infra, req.CurrentNode)
@@ -209,4 +209,83 @@ func (g *familyGraphService) DelNode(infra *middleware.Infra, req *model.FamilyG
 	}
 
 	return nil
+}
+
+func (g *familyGraphService) GetGraph(infra *middleware.Infra, req *model.FamilyGraphAPIGraphReq) (*model.FamilyGraphAPIGraphResp, error) {
+	graph := new(model.FamilyGraphAPIGraphResp)
+	graph.FamilyId = req.FamilyId
+
+	graphDao := dao.NewGraphDao(infra.DB)
+	root, err := graphDao.GraphRootNode(infra, req.FamilyId)
+	if err != nil {
+		return nil, errorenum.ErrorNotExistRootNode
+	}
+
+	childNodes, err := graphDao.ChildNodeByFamilyId(infra, root.ID, req.FamilyId)
+	if err != nil {
+		return nil, err
+	}
+
+	graphRoot := new(model.FamilyGraphTree)
+	graphRoot.Node = root.ID
+	graphRoot.Name = root.Name
+	graphRoot.Gender = root.Gender
+	graphRoot.Birth = utils.Time2TimeStamp(root.Birth)
+	graphRoot.DeathTime = utils.Time2TimeStamp(root.DeathTime)
+	graphRoot.Portrait = root.Portrait
+	graphRoot.Hometown = root.Hometown
+	graphRoot.Description = root.Description
+	graphRoot.SpouseNode = root.SpouseNode
+	graphTree := JoinGraphTree(graphRoot, childNodes)
+	graph.Graph = graphTree
+	return graph, nil
+}
+
+func JoinGraphTree(graphTree *model.FamilyGraphTree, nodes []*inner.FamilyGraphModel) *model.FamilyGraphTree {
+	if len(nodes) == 0 {
+		return graphTree
+	}
+
+	retNodes := make([]*inner.FamilyGraphModel, 0)
+	for _, node := range nodes {
+		if node.FatherNode == graphTree.Node {
+			if graphTree.Children == nil {
+				graphTree.Children = make([]*model.FamilyGraphTree, 0)
+			}
+
+			child := new(model.FamilyGraphTree)
+			child.Node = node.ID
+			child.Name = node.Name
+			child.Gender = node.Gender
+			child.Birth = utils.Time2TimeStamp(node.Birth)
+			child.DeathTime = utils.Time2TimeStamp(node.DeathTime)
+			child.Portrait = node.Portrait
+			child.Hometown = node.Hometown
+			child.Description = node.Description
+			child.SpouseNode = node.SpouseNode
+			graphTree.Children = append(graphTree.Children, child)
+		} else if node.ID == graphTree.SpouseNode {
+			if graphTree.Spouse == nil {
+				graphTree.Spouse = make([]*model.FamilyGraphNode, 0)
+			}
+			spouse := new(model.FamilyGraphNode)
+			spouse.Node = node.ID
+			spouse.Name = node.Name
+			spouse.Gender = node.Gender
+			spouse.Birth = utils.Time2TimeStamp(node.Birth)
+			spouse.DeathTime = utils.Time2TimeStamp(node.DeathTime)
+			spouse.Portrait = node.Portrait
+			spouse.Hometown = node.Hometown
+			spouse.Description = node.Description
+			graphTree.Spouse = append(graphTree.Spouse, spouse)
+		} else {
+			retNodes = append(retNodes, node)
+		}
+	}
+
+	for _, child := range graphTree.Children {
+		JoinGraphTree(child, retNodes)
+	}
+
+	return graphTree
 }
