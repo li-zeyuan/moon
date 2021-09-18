@@ -12,7 +12,7 @@ const (
 	ColumnGraphUid         = "uid"
 	ColumnGraphFamilyID    = "family_id"
 	ColumnGraphFatherUid   = "father_node"
-	ColumnGraphSpouseUid   = "spouse_node"
+	ColumnGraphHusbandNode = "husband_node"
 	ColumnGraphIndex       = "index_num"
 	ColumnGraphName        = "name"
 	ColumnGraphGender      = "gender"
@@ -28,8 +28,7 @@ type FamilyGraphModel struct {
 	basemodel.BaseModel
 	FamilyId    int64     `gorm:"index:idx_family_id"`   // 家族id
 	FatherNode  int64     `gorm:"index:idx_father_node"` // 父节点
-	SpouseNode  int64     // 配偶节点
-	IsSpouse    bool      // 是否配偶节点
+	HusbandNode int64     // 配偶节点
 	IndexNum    int       `gorm:"default:1"` // 兄弟节点间的排序，从1开始
 	Name        string    // 姓名
 	Gender      int       // 性别

@@ -21,11 +21,30 @@ func RequestIDClientInterceptor() grpc.UnaryClientInterceptor {
 
 		value := ctx.Value(RequestId)
 		if requestID, ok := value.(string); ok && requestID != "" {
-			md[RequestId] = []string{requestID}
+			md[string(RequestId)] = []string{requestID}
 		}
 
 		return invoker(metadata.NewOutgoingContext(ctx, md), method, req, resp, cc, opts...)
 	}
+}
+
+func Invoke(baseInfra *BaseInfra, address, url string, in, out interface{}, opts ...grpc.CallOption) error {
+	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithChainUnaryInterceptor(RequestIDClientInterceptor()))
+	if conn != nil {
+		defer conn.Close()
+	}
+	if err != nil {
+		baseInfra.Log.Errorf("did not connect: %v", err)
+		return err
+	}
+
+	err = conn.Invoke(baseInfra.Context, url, in, out, opts...)
+	if err != nil {
+		baseInfra.Log.Errorf("grpc invoke url: %s, error: %v", url, err)
+		return err
+	}
+
+	return nil
 }
 
 func RequestIDUnaryServerInterceptor() grpc.UnaryServerInterceptor {
@@ -47,7 +66,7 @@ func GetRequestIdFromIncomingContext(ctx context.Context) string {
 	}
 
 	reqId := ""
-	requestIDs := md[RequestId]
+	requestIDs := md[string(RequestId)]
 	if len(requestIDs) >= 1 {
 		reqId = requestIDs[0]
 	}

@@ -45,7 +45,7 @@ func (g *familyGraphService) verifyCreateNode(infra *middleware.Infra, req *mode
 		if len(req.Name) == 0 {
 			return errorenum.ErrorInvalidArgumentName
 		}
-	case model.OptionAddSpouseNode:
+	case model.OptionAddWifeNode:
 		if req.CurrentNode == 0 {
 			return errorenum.ErrorCurrentParamsNode
 		}
@@ -92,16 +92,9 @@ func (g *familyGraphService) CreateNode(infra *middleware.Infra, req *model.Fami
 		if err != nil {
 			return err
 		}
-	case model.OptionAddSpouseNode:
-		spouseNode := sequence.NewID()
-		err = saveNodeByOpt(infra, spouseNode, req)
-		if err != nil {
-			return err
-		}
-
-		updateColumnMap := make(map[string]interface{})
-		updateColumnMap[inner.ColumnGraphSpouseUid] = spouseNode
-		err = graphDao.UpdateByCurrentNode(infra, req.CurrentNode, updateColumnMap)
+	case model.OptionAddWifeNode:
+		wifeNode := sequence.NewID()
+		err = saveNodeByOpt(infra, wifeNode, req)
 		if err != nil {
 			return err
 		}
@@ -124,13 +117,22 @@ func saveNodeByOpt(infra *middleware.Infra, nodeId int64, req *model.FamilyGraph
 	node.Hometown = req.Hometown
 	node.Description = req.Description
 	if req.Option == model.OptionAddChildNode {
-		index, err := graphDao.GetIndex(infra, req.CurrentNode)
+		index, err := graphDao.GetChildIndex(infra, req.CurrentNode)
 		if err != nil {
 			return err
 		}
 
 		node.IndexNum = index + 1
 		node.FatherNode = req.CurrentNode
+	}
+	if req.Option == model.OptionAddWifeNode {
+		index, err := graphDao.GetWifeIndex(infra, req.CurrentNode)
+		if err != nil {
+			return err
+		}
+
+		node.IndexNum = index + 1
+		node.HusbandNode = req.CurrentNode
 	}
 
 	return graphDao.Save(infra, []*inner.FamilyGraphModel{node})
@@ -193,7 +195,7 @@ func (g *familyGraphService) UpdateNode(infra *middleware.Infra, req *model.Fami
 
 func (g *familyGraphService) DelNode(infra *middleware.Infra, req *model.FamilyGraphAPIDelReq) error {
 	graphDao := dao.NewGraphDao(infra.DB)
-	lastIndex, err := graphDao.GetIndex(infra, req.Node)
+	lastIndex, err := graphDao.GetChildIndex(infra, req.Node)
 	if err != nil {
 		return err
 	}
@@ -235,7 +237,6 @@ func (g *familyGraphService) GetGraph(infra *middleware.Infra, req *model.Family
 	graphRoot.Portrait = root.Portrait
 	graphRoot.Hometown = root.Hometown
 	graphRoot.Description = root.Description
-	graphRoot.SpouseNode = root.SpouseNode
 	graphTree := JoinGraphTree(graphRoot, childNodes)
 	graph.Graph = graphTree
 	return graph, nil
@@ -262,11 +263,10 @@ func JoinGraphTree(graphTree *model.FamilyGraphTree, nodes []*inner.FamilyGraphM
 			child.Portrait = node.Portrait
 			child.Hometown = node.Hometown
 			child.Description = node.Description
-			child.SpouseNode = node.SpouseNode
 			graphTree.Children = append(graphTree.Children, child)
-		} else if node.ID == graphTree.SpouseNode {
-			if graphTree.Spouse == nil {
-				graphTree.Spouse = make([]*model.FamilyGraphNode, 0)
+		} else if node.HusbandNode == graphTree.Node {
+			if graphTree.Wives == nil {
+				graphTree.Wives = make([]*model.FamilyGraphNode, 0)
 			}
 			spouse := new(model.FamilyGraphNode)
 			spouse.Node = node.ID
@@ -277,7 +277,7 @@ func JoinGraphTree(graphTree *model.FamilyGraphTree, nodes []*inner.FamilyGraphM
 			spouse.Portrait = node.Portrait
 			spouse.Hometown = node.Hometown
 			spouse.Description = node.Description
-			graphTree.Spouse = append(graphTree.Spouse, spouse)
+			graphTree.Wives = append(graphTree.Wives, spouse)
 		} else {
 			retNodes = append(retNodes, node)
 		}

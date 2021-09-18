@@ -10,5 +10,5 @@ func TestUniqueArray(t *testing.T) {
 }
 
 func TestIsInArray(t *testing.T) {
-	t.Log(IsInArray(1, []int{1}))
+	t.Log(IsInArray(1, []int{2}))
 }

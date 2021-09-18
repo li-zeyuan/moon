@@ -4,7 +4,7 @@ const (
 	OptionAddBaseNode   = 1
 	OptionAddFatherNode = 2
 	OptionAddChildNode  = 3
-	OptionAddSpouseNode = 4
+	OptionAddWifeNode   = 4
 )
 
 type FamilyGraphAPICreateReq struct {
@@ -65,12 +65,11 @@ type FamilyGraphNode struct {
 	Portrait    string `json:"portrait"`
 	Hometown    string `json:"hometown"`
 	Description string `json:"description"`
-	SpouseNode  int64  `json:"spouse_node"`
 }
 
 type FamilyGraphTree struct {
 	FamilyGraphNode
-	Spouse   []*FamilyGraphNode `json:"spouse"`
+	Wives    []*FamilyGraphNode `json:"wives"`
 	Children []*FamilyGraphTree `json:"children"`
 }
 

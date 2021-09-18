@@ -7,9 +7,9 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
-const (
-	RequestId = "request_id"
-)
+type requestIdCtxKey string
+
+var RequestId requestIdCtxKey = "request_id"
 
 func NewRequestId() string {
 	return bson.NewObjectId().Hex()
@@ -23,7 +23,7 @@ func RequestIdMiddleware(next http.Handler) http.Handler {
 
 		// 设置context到r.context
 		r = r.WithContext(ctx)
-		w.Header().Add(RequestId, requestId)
+		w.Header().Add(string(RequestId), requestId)
 
 		next.ServeHTTP(w, r)
 	})

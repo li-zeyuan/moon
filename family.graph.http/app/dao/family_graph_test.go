@@ -22,7 +22,16 @@ func TestRelationDao_GetIndex(t *testing.T) {
 	infra := middleware.NewInfra(context.Background(), "")
 	familyDao := NewGraphDao(infra.DB)
 
-	index, err := familyDao.GetIndex(infra, 321518596442025984)
+	index, err := familyDao.GetChildIndex(infra, 321518596442025984)
+	assert.Equal(t, err, nil)
+	t.Log(index)
+}
+
+func TestRelationDao_GetWifeIndex(t *testing.T) {
+	infra := middleware.NewInfra(context.Background(), "")
+	familyDao := NewGraphDao(infra.DB)
+
+	index, err := familyDao.GetChildIndex(infra, 321518596442025984)
 	assert.Equal(t, err, nil)
 	t.Log(index)
 }
@@ -63,7 +72,7 @@ func TestRelationDao_UpdateParentNode(t *testing.T) {
 	graphDao := NewGraphDao(infra.DB)
 
 	updateColumnMap := make(map[string]interface{})
-	updateColumnMap[inner.ColumnGraphSpouseUid] = 22
+	updateColumnMap[inner.ColumnGraphHusbandNode] = 22
 	err := graphDao.UpdateByCurrentNode(infra, 321518596442025984, updateColumnMap)
 	assert.Equal(t, err, nil)
 }

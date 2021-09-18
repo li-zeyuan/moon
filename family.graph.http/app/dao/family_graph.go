@@ -3,10 +3,9 @@ package dao
 import (
 	"fmt"
 
-	basemodel "github.com/li-zeyuan/micro/micro.common.api/model"
-
 	"github.com/li-zeyuan/micro/family.graph.http/app/model/inner"
 	"github.com/li-zeyuan/micro/family.graph.http/library/middleware"
+	baseModel "github.com/li-zeyuan/micro/micro.common.api/model"
 	"gorm.io/gorm"
 )
 
@@ -26,7 +25,7 @@ func (d *GraphDao) GraphRootNode(infra *middleware.Infra, familyId int64) (*inne
 		Where("deleted_at is null").
 		Where("family_id = ?", familyId).
 		Where("father_node = ?", 0).
-		Where("is_spouse = ?", false).
+		Where("husband_node = ?", 0).
 		First(root).Error
 	if err != nil {
 		infra.Log.Error("get graph root node error: ", err)
@@ -51,7 +50,7 @@ func (d *GraphDao) Save(infra *middleware.Infra, models []*inner.FamilyGraphMode
 	return nil
 }
 
-func (d *GraphDao) GetIndex(infra *middleware.Infra, currentNode int64) (int, error) {
+func (d *GraphDao) GetChildIndex(infra *middleware.Infra, currentNode int64) (int, error) {
 	if currentNode == 0 {
 		return 0, nil
 	}
@@ -72,10 +71,31 @@ func (d *GraphDao) GetIndex(infra *middleware.Infra, currentNode int64) (int, er
 	return m.IndexNum, nil
 }
 
+func (d *GraphDao) GetWifeIndex(infra *middleware.Infra, husbandNode int64) (int, error) {
+	if husbandNode == 0 {
+		return 0, nil
+	}
+
+	m := new(inner.IndexObj)
+	err := d.db.Table(inner.TableFamilyGraph).
+		Select(inner.ColumnGraphIndex).
+		Where(fmt.Sprintf("%s=?", inner.ColumnGraphHusbandNode), husbandNode).
+		Where("deleted_at is null").
+		Order(fmt.Sprintf("%s desc", inner.ColumnGraphIndex)).
+		Limit(1).
+		Find(m).Error // 没有not row error
+	if err != nil {
+		infra.Log.Error("get member relation index error: ", err)
+		return 0, err
+	}
+
+	return m.IndexNum, nil
+}
+
 func (d *GraphDao) NodeByIds(infra *middleware.Infra, id int64) (*inner.FamilyGraphModel, error) {
 	m := new(inner.FamilyGraphModel)
 	err := d.db.Table(inner.TableFamilyGraph).
-		Where(fmt.Sprintf("%s = ?", basemodel.ColumnId), id).
+		Where(fmt.Sprintf("%s = ?", baseModel.ColumnId), id).
 		Where("deleted_at is null").
 		First(&m).Error
 	if err != nil {
@@ -122,7 +142,7 @@ func (d *GraphDao) UpdateByCurrentNode(infra *middleware.Infra, currentNode int6
 	}
 
 	err := d.db.Table(inner.TableFamilyGraph).
-		Where(fmt.Sprintf("%s = ?", basemodel.ColumnId), currentNode).
+		Where(fmt.Sprintf("%s = ?", baseModel.ColumnId), currentNode).
 		Where("deleted_at is null").
 		UpdateColumns(updateColumnMap).Error
 	if err != nil {
