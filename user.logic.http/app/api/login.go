@@ -14,6 +14,15 @@ var Login = new(loginAPI)
 
 type loginAPI struct{}
 
+// SingUp
+// @Summary 登录
+// @tags 登录模块
+// @Description
+// @Accept  json
+// @Produce  json
+// @Param req body model.LoginApiSingUpReq true " "
+// @Router /api/user_login/sing_up [post]
+// @Success 200 {object} string "{"dm_error":0,"error_msg":"","data":{}}"
 func (l *loginAPI) SingUp(w http.ResponseWriter, r *http.Request) {
 	infra := middleware.GetInfra(r.Context())
 

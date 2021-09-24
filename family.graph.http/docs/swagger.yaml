@@ -1,0 +1,336 @@
+definitions:
+  model.FamilyAPICreateReq:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+      portrait:
+        type: string
+      uid:
+        type: integer
+    type: object
+  model.FamilyAPIJoinReq:
+    properties:
+      family_id:
+        type: integer
+      uid:
+        type: integer
+    type: object
+  model.FamilyAPIQuitReq:
+    properties:
+      family_id:
+        type: integer
+      uid:
+        type: integer
+    type: object
+  model.FamilyGraphAPICreateReq:
+    properties:
+      birth:
+        type: integer
+      current_node:
+        type: integer
+      death_time:
+        type: integer
+      description:
+        type: string
+      family_id:
+        type: integer
+      father_node:
+        type: integer
+      gender:
+        type: integer
+      hometown:
+        type: string
+      name:
+        type: string
+      option:
+        description: 1-添加跟节点；2-添加父节点；3-添加孩子节点；4添加配偶节点
+        type: integer
+      portrait:
+        type: string
+    type: object
+  model.FamilyGraphAPIDelReq:
+    properties:
+      node:
+        type: integer
+    type: object
+  model.FamilyGraphAPIDetailReq:
+    properties:
+      node:
+        type: integer
+    type: object
+  model.FamilyGraphAPIDetailResp:
+    properties:
+      birth:
+        type: integer
+      death_time:
+        type: integer
+      description:
+        type: string
+      gender:
+        type: integer
+      hometown:
+        type: string
+      index_num:
+        type: integer
+      name:
+        type: string
+      node:
+        type: integer
+      portrait:
+        type: string
+    type: object
+  model.FamilyGraphAPIGraphReq:
+    properties:
+      family_id:
+        type: integer
+    type: object
+  model.FamilyGraphAPIGraphResp:
+    properties:
+      family_id:
+        type: integer
+      graph:
+        $ref: '#/definitions/model.FamilyGraphTree'
+    type: object
+  model.FamilyGraphAPIUpdateReq:
+    properties:
+      birth:
+        type: integer
+      death_time:
+        type: integer
+      description:
+        type: string
+      gender:
+        type: integer
+      hometown:
+        type: string
+      name:
+        type: string
+      node:
+        type: integer
+      portrait:
+        type: string
+    type: object
+  model.FamilyGraphNode:
+    properties:
+      birth:
+        type: integer
+      death_time:
+        type: integer
+      description:
+        type: string
+      gender:
+        type: integer
+      hometown:
+        type: string
+      name:
+        type: string
+      node:
+        type: integer
+      portrait:
+        type: string
+    type: object
+  model.FamilyGraphTree:
+    properties:
+      birth:
+        type: integer
+      children:
+        items:
+          $ref: '#/definitions/model.FamilyGraphTree'
+        type: array
+      death_time:
+        type: integer
+      description:
+        type: string
+      gender:
+        type: integer
+      hometown:
+        type: string
+      name:
+        type: string
+      node:
+        type: integer
+      portrait:
+        type: string
+      wives:
+        items:
+          $ref: '#/definitions/model.FamilyGraphNode'
+        type: array
+    type: object
+host: 39.108.101.229:80
+info:
+  contact: {}
+  description: 家谱服务 API 文档.
+  title: 家谱服务
+  version: "1.0"
+paths:
+  /api/family/create:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: ' '
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/model.FamilyAPICreateReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"dm_error":0,"error_msg":"","data":{}}'
+          schema:
+            type: string
+      summary: 创建家族
+      tags:
+      - 家族模块
+  /api/family/join:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: ' '
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/model.FamilyAPIJoinReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"dm_error":0,"error_msg":"","data":{}}'
+          schema:
+            type: string
+      summary: 加入家族
+      tags:
+      - 家族模块
+  /api/family/quit:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: ' '
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/model.FamilyAPIQuitReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"dm_error":0,"error_msg":"","data":{}}'
+          schema:
+            type: string
+      summary: 退出家族
+      tags:
+      - 家族模块
+  /api/family_graph/create:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: ' '
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/model.FamilyGraphAPICreateReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"dm_error":0,"error_msg":"","data":{}}'
+          schema:
+            type: string
+      summary: 创建族谱图节点
+      tags:
+      - 家族模块
+  /api/family_graph/delete:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: ' '
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/model.FamilyGraphAPIDelReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"dm_error":0,"error_msg":"","data":{}}'
+          schema:
+            type: string
+      summary: 删除族谱图节点
+      tags:
+      - 家族模块
+  /api/family_graph/detail:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: ' '
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/model.FamilyGraphAPIDetailReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.FamilyGraphAPIDetailResp'
+      summary: 族谱图节点详情
+      tags:
+      - 家族模块
+  /api/family_graph/graph:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: ' '
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/model.FamilyGraphAPIGraphReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.FamilyGraphAPIGraphResp'
+      summary: 族谱图
+      tags:
+      - 家族模块
+  /api/family_graph/update:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: ' '
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/model.FamilyGraphAPIUpdateReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"dm_error":0,"error_msg":"","data":{}}'
+          schema:
+            type: string
+      summary: 更新族谱图节点
+      tags:
+      - 家族模块
+swagger: "2.0"

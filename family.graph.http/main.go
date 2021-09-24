@@ -14,6 +14,11 @@ import (
 	"github.com/li-zeyuan/micro/micro.common.api/logger"
 )
 
+// @title 家谱服务
+// @version 1.0
+// @description 家谱服务 API 文档.
+// @host 39.108.101.229:80
+// @BasePath
 func main() {
 	boot.Init()
 	srv := http.Server{

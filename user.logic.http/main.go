@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"syscall"
 
 	"github.com/li-zeyuan/micro/micro.common.api/logger"
 	"github.com/li-zeyuan/micro/user.logic.http/boot"
@@ -13,6 +14,11 @@ import (
 	"github.com/li-zeyuan/micro/user.logic.http/router"
 )
 
+// @title 用户服务
+// @version 1.0
+// @description 用户服务 API 文档.
+// @host 39.108.101.229:80
+// @BasePath
 func main() {
 	boot.Init()
 	srv := http.Server{
@@ -27,7 +33,7 @@ func main() {
 	idleConnsClosed := make(chan struct{})
 	go func() {
 		sigint := make(chan os.Signal, 1)
-		signal.Notify(sigint, os.Interrupt, os.Kill)
+		signal.Notify(sigint, os.Interrupt, syscall.SIGTERM)
 		<-sigint
 
 		// We received an interrupt signal, shut down.

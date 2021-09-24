@@ -23,6 +23,8 @@
 - 搭建nginx
 - 限流
 - 熔断
+- ci/cd
+- go-swag
 
 ### 文档
 
@@ -31,3 +33,5 @@
 - 配置文件解析：https://github.com/BurntSushi/toml
 - gorm文档：https://gorm.io/docs/
 - 链路追踪服务：https://zipkin.io/
+- GitHub Actions 入门教程: https://www.ruanyifeng.com/blog/2019/09/getting-started-with-github-actions.html
+- go swag:https://github.com/swaggo/swag/blob/master/README_zh-CN.md#%E6%94%AF%E6%8C%81%E7%9A%84web%E6%A1%86%E6%9E%B6
