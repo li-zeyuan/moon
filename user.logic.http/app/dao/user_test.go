@@ -29,6 +29,15 @@ func TestUserDao_GetByOpenid(t *testing.T) {
 	t.Log(userInfos)
 }
 
+func TestUserDao_GetOne(t *testing.T) {
+	infra := middleware.NewInfra(context.Background(), "")
+
+	userDao := NewUser(infra.DB)
+	userInfos, err := userDao.GetOne(infra, 318861102280601344)
+	assert.Equal(t, err, nil)
+	t.Log(userInfos)
+}
+
 func TestUserDao_GetByPassport(t *testing.T) {
 
 }

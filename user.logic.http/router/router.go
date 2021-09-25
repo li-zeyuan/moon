@@ -20,6 +20,9 @@ func Init(srv *http.ServeMux) {
 	r.Add("/api/login/phone_login", http.HandlerFunc(api.Login.PhoneLogin))
 	r.Add("/api/login/wechat_login", http.HandlerFunc(api.Login.WechatLogin))
 
+	r.Add("/api/profile/detail", http.HandlerFunc(api.Profile.Detail))
+	r.Add("/api/profile/update", http.HandlerFunc(api.Profile.Update))
+
 	for url, handler := range r.Mux {
 		log.Println("api: ", url)
 		srv.Handle(url, handler)

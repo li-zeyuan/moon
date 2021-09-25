@@ -83,9 +83,24 @@ func (d *UserDao) GetByOpenid(infra *middleware.Infra, openid string) (*inner.Us
 	m := new(inner.UserProfileModel)
 	err := d.db.Table(inner.TableNameUserProfile).
 		Where("openid = ?", openid).
+		Where("deleted_at is null").
 		First(m).Error
 	if err != nil {
 		infra.Log.Error("get user by openid error: ", err)
+		return nil, err
+	}
+
+	return m, nil
+}
+
+func (d *UserDao) GetOne(infra *middleware.Infra, uid int64) (*inner.UserProfileModel, error) {
+	m := new(inner.UserProfileModel)
+	err := d.db.Table(inner.TableNameUserProfile).
+		Where("uid = ?", uid).
+		Where("deleted_at is null").
+		First(m).Error
+	if err != nil {
+		infra.Log.Error("get user by uid error: ", err)
 		return nil, err
 	}
 
