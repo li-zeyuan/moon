@@ -6,16 +6,20 @@ import (
 
 	"github.com/li-zeyuan/micro/micro.common.api/logger"
 	"github.com/li-zeyuan/micro/micro.common.api/middleware"
+	"github.com/li-zeyuan/micro/user.logic.http/config"
 	"gopkg.in/mgo.v2/bson"
+	"gorm.io/gorm"
 )
 
 type Infra struct {
 	*middleware.BaseInfra
+	DB *gorm.DB
 }
 
 func NewInfra(ctx context.Context, requestId string) *Infra {
 	return &Infra{
 		middleware.NewBaseInfra(ctx, requestId),
+		config.InitDatabase(&config.Conf),
 	}
 }
 

@@ -16,7 +16,9 @@ func Init(srv *http.ServeMux) {
 	r.Use(middleware.InfraMiddleware)
 	r.Use(middlewareCommon.JwtMiddleware)
 	// todo JwtMiddleware 可自选
-	r.Add("/api/user_login/sing_up", http.HandlerFunc(api.Login.SingUp))
+	r.Add("/api/login/phone_code", http.HandlerFunc(api.Login.PhoneCode))
+	r.Add("/api/login/phone_login", http.HandlerFunc(api.Login.PhoneLogin))
+	r.Add("/api/login/wechat_login", http.HandlerFunc(api.Login.WechatLogin))
 
 	for url, handler := range r.Mux {
 		log.Println("api: ", url)
