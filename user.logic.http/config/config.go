@@ -31,12 +31,17 @@ type database struct {
 	Timeout int64  `toml:"timeout"`
 }
 
+type wechat struct {
+	AppId  string `toml:"app_id"`
+	Secret string `toml:"secret"`
+}
+
 type Config struct {
 	Server       server         `toml:"server"`
 	ServerClient []serverClient `toml:"server_client"`
 	DB           database       `toml:"database"`
-	AppId        string         `toml:"app_id"`
-	Secret       string         `toml:"secret"`
+	Wechat       wechat         `toml:"wechat"`
+	JwtSecretKey string         `json:"jwt_secret_key"`
 }
 
 func init() {

@@ -2,7 +2,6 @@ package service
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"net/http"
 	"regexp"
@@ -68,8 +67,10 @@ func (l *loginService) WeChatLogin(infra *middleware.Infra, req *model.LoginApiW
 		return "", err
 	}
 	if err == gorm.ErrRecordNotFound {
-		userProfile := new(inner.UserProfileModel)
+		userProfile = new(inner.UserProfileModel)
 		userProfile.Uid = sequence.NewID()
+		userProfile.Name = fmt.Sprintf("家普_%d", userProfile.Uid%1000000)
+		userProfile.Gender = inner.GenderMan
 		userProfile.Openid = wxSession.OpenId
 		userProfile.SessionKey = wxSession.SessionKey
 		err = userDao.Save(infra, []*inner.UserProfileModel{userProfile})
@@ -87,7 +88,7 @@ func (l *loginService) WeChatLogin(infra *middleware.Infra, req *model.LoginApiW
 }
 
 func queryWxSession(infra *middleware.Infra, code string) (*model.WXSessionRet, error) {
-	url := fmt.Sprintf(baseWXSessionUrl, config.Conf.AppId, config.Conf.Secret, code)
+	url := fmt.Sprintf(baseWXSessionUrl, config.Conf.Wechat.AppId, config.Conf.Wechat.Secret, code)
 	resp, err := http.Get(url)
 	if err != nil {
 		infra.Log.Error("get weChat session error: ", err)
@@ -104,7 +105,7 @@ func queryWxSession(infra *middleware.Infra, code string) (*model.WXSessionRet, 
 
 	// 判断微信接口返回的是否是一个异常情况
 	if wxResp.ErrCode != 0 {
-		return nil, errors.New(fmt.Sprintf("ErrCode:%s  ErrMsg:%s", wxResp.ErrCode, wxResp.ErrMsg))
+		return nil, fmt.Errorf("ErrCode:%d  ErrMsg:%s", wxResp.ErrCode, wxResp.ErrMsg)
 	}
 
 	return &wxResp, nil

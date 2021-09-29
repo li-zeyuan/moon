@@ -20,6 +20,11 @@ const (
 	ColumnDescription = "description"
 )
 
+const (
+	GenderMan   = 1
+	GenderWoman = 2
+)
+
 type UserProfileModel struct {
 	model.BaseModel
 	Uid         int64     // 用户ID
@@ -34,4 +39,3 @@ type UserProfileModel struct {
 	Openid      string    // WX用户openid
 	SessionKey  string    // session_key
 }
-

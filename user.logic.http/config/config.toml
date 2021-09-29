@@ -1,3 +1,4 @@
+jwt_secret_key = "4jAwLIKNF9llT1xlQb3JuxSseELYAj5Y"
 [server]
     service_name="user.logic.http"
     port = "7070"
@@ -14,3 +15,7 @@
     max_conn = 100
     max_open = 10
     timeout = 2000
+
+[wechat]
+    app_id="wx2bae646e7f57c505"
+    secret="c8514ef6cc67827f74759958342861a9"

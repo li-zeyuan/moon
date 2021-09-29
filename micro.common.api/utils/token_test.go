@@ -8,7 +8,7 @@ import (
 )
 
 func TestGenerateToken(t *testing.T) {
-	token, err := GenerateToken(320124380004740863, 98, time.Second*3)
+	token, err := GenerateToken(318861102280601344, 98, time.Hour*3)
 	assert.Equal(t, err, nil)
 	t.Log(token)
 }

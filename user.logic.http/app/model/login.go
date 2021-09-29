@@ -8,7 +8,7 @@ type LoginApiPhoneLoginReq struct {
 }
 
 type LoginApiWeChatLoginReq struct {
-	Code string `json:"code" validate:"gt=0"`
+	Code string `json:"code" validate:"min=1"`
 }
 
 type LoginApiWeChatLoginResp struct {
@@ -16,9 +16,9 @@ type LoginApiWeChatLoginResp struct {
 }
 
 type WXSessionRet struct {
-	OpenId string			`json:"openid"`
-	SessionKey string		`json:"session_key"`
-	UnionId string			`json:"unionid"`
-	ErrCode int				`json:"errcode"`
-	ErrMsg string 			`json:"errmsg"`
+	OpenId     string `json:"openid"`
+	SessionKey string `json:"session_key"`
+	UnionId    string `json:"unionid"`
+	ErrCode    int    `json:"errcode"`
+	ErrMsg     string `json:"errmsg"`
 }

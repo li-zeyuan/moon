@@ -1,6 +1,8 @@
 package dao
 
 import (
+	"github.com/li-zeyuan/micro/micro.common.api/utils"
+	"github.com/li-zeyuan/micro/user.logic.http/app/model"
 	"github.com/li-zeyuan/micro/user.logic.http/app/model/inner"
 	"github.com/li-zeyuan/micro/user.logic.http/library/middleware"
 	"gorm.io/gorm"
@@ -31,7 +33,7 @@ func (d *UserDao) Save(infra *middleware.Infra, models []*inner.UserProfileModel
 	return nil
 }
 
-func (d *UserDao) Update(infra *middleware.Infra, models []*inner.UserProfileModel) error {
+func (d *UserDao) Update(infra *middleware.Infra, models []*model.UserProfileUpdateField) error {
 	if len(models) == 0 {
 		return nil
 	}
@@ -42,29 +44,26 @@ func (d *UserDao) Update(infra *middleware.Infra, models []*inner.UserProfileMod
 		}
 
 		values := make(map[string]interface{})
-		if len(m.Name) > 0 {
-			values[inner.ColumnName] = m.Name
+		if m.Name != nil {
+			values[inner.ColumnName] = *m.Name
 		}
-		if len(m.Name) > 0 {
-			values[inner.ColumnPassport] = m.Passport
+		if m.Password != nil {
+			values[inner.ColumnPassword] = *m.Password
 		}
-		if len(m.Name) > 0 {
-			values[inner.ColumnPassword] = m.Password
+		if m.Gender != nil {
+			values[inner.ColumnGender] = *m.Gender
 		}
-		if len(m.Name) > 0 {
-			values[inner.ColumnGender] = m.Gender
+		if m.Birth != nil {
+			values[inner.ColumnBirth] = utils.TimeStamp2Time(*m.Birth)
 		}
-		if len(m.Name) > 0 {
-			values[inner.ColumnBirth] = m.Birth
+		if m.Portrait != nil {
+			values[inner.ColumnPortrait] = *m.Portrait
 		}
-		if len(m.Name) > 0 {
-			values[inner.ColumnPortrait] = m.Portrait
+		if m.Hometown != nil {
+			values[inner.ColumnHometown] = *m.Hometown
 		}
-		if len(m.Name) > 0 {
-			values[inner.ColumnHometown] = m.Hometown
-		}
-		if len(m.Name) > 0 {
-			values[inner.ColumnDescription] = m.Description
+		if m.Description != nil {
+			values[inner.ColumnDescription] = *m.Description
 		}
 
 		err := d.db.Table(inner.TableNameUserProfile).

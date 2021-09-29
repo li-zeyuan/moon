@@ -31,3 +31,33 @@ func (l *profileService) Detail(infra *middleware.Infra, uid int64) (*model.Prof
 
 	return resp, nil
 }
+
+func (l *profileService) Update(infra *middleware.Infra, uid int64, updateField *model.ProfileApiUpdateRep) error {
+	userDao := dao.NewUser(infra.DB)
+	_, err := userDao.GetOne(infra, uid)
+	if err != nil {
+		return err
+	}
+
+	updateItem := new(model.UserProfileUpdateField)
+	updateItem.Uid = uid
+	updateItem.Name = &updateField.Name
+	updateItem.Gender = &updateField.Gender
+	updateItem.Birth = &updateField.Birth
+	if len(updateField.Portrait) > 0 {
+		updateItem.Portrait = &updateField.Portrait
+	}
+	if len(updateField.Hometown) > 0 {
+		updateItem.Hometown = &updateField.Hometown
+	}
+	if len(updateField.Description) > 0 {
+		updateItem.Description = &updateField.Description
+	}
+
+	err = userDao.Update(infra, []*model.UserProfileUpdateField{updateItem})
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
