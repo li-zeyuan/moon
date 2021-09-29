@@ -62,8 +62,8 @@ func (d *UserDao) Update(infra *middleware.Infra, models []*model.UserProfileUpd
 		if m.Hometown != nil {
 			values[inner.ColumnHometown] = *m.Hometown
 		}
-		if m.Description != nil {
-			values[inner.ColumnDescription] = *m.Description
+		if m.Phone != nil {
+			values[inner.ColumnPhone] = *m.Phone
 		}
 
 		err := d.db.Table(inner.TableNameUserProfile).

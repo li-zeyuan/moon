@@ -27,7 +27,7 @@ func (l *profileService) Detail(infra *middleware.Infra, uid int64) (*model.Prof
 	resp.Birth = utils.Time2TimeStamp(userProfile.Birth)
 	resp.Portrait = userProfile.Portrait
 	resp.Hometown = userProfile.Hometown
-	resp.Description = userProfile.Description
+	resp.Phone = userProfile.Phone
 
 	return resp, nil
 }
@@ -50,8 +50,8 @@ func (l *profileService) Update(infra *middleware.Infra, uid int64, updateField 
 	if len(updateField.Hometown) > 0 {
 		updateItem.Hometown = &updateField.Hometown
 	}
-	if len(updateField.Description) > 0 {
-		updateItem.Description = &updateField.Description
+	if len(updateField.Phone) > 0 {
+		updateItem.Phone = &updateField.Phone
 	}
 
 	err = userDao.Update(infra, []*model.UserProfileUpdateField{updateItem})
