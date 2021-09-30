@@ -8,7 +8,7 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/li-zeyuan/micro/micro.common.api/logger"
+	"github.com/li-zeyuan/micro/moon.common.api/logger"
 	"github.com/li-zeyuan/micro/user.logic.http/boot"
 	"github.com/li-zeyuan/micro/user.logic.http/config"
 	"github.com/li-zeyuan/micro/user.logic.http/router"

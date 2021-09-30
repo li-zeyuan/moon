@@ -7,9 +7,9 @@ import (
 	"regexp"
 	"time"
 
-	"github.com/li-zeyuan/micro/micro.common.api/errorenum"
-	"github.com/li-zeyuan/micro/micro.common.api/sequence"
-	"github.com/li-zeyuan/micro/micro.common.api/utils"
+	"github.com/li-zeyuan/micro/moon.common.api/errorenum"
+	"github.com/li-zeyuan/micro/moon.common.api/sequence"
+	"github.com/li-zeyuan/micro/moon.common.api/utils"
 	"github.com/li-zeyuan/micro/user.logic.http/app/dao"
 	"github.com/li-zeyuan/micro/user.logic.http/app/model"
 	"github.com/li-zeyuan/micro/user.logic.http/app/model/inner"

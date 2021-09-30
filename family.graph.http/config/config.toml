@@ -1,6 +1,6 @@
 [server]
     service_name="family.graph.http"
-    port = "7072"
+    port = "7071"
     timeout = 5000
 
 [[server_client]]

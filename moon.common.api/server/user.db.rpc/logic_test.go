@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/li-zeyuan/micro/micro.common.api/middleware"
-	"github.com/li-zeyuan/micro/micro.common.api/server/user.db.rpc/pb/profile"
+	"github.com/li-zeyuan/micro/moon.common.api/middleware"
+	"github.com/li-zeyuan/micro/moon.common.api/server/user.db.rpc/pb/profile"
 	"github.com/stretchr/testify/assert"
 )
 

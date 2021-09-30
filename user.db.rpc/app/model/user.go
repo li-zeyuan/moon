@@ -1,8 +1,8 @@
 package model
 
 import (
-	"github.com/li-zeyuan/micro/micro.common.api/server/user.db.rpc/pb/profile"
-	"github.com/li-zeyuan/micro/micro.common.api/utils"
+	"github.com/li-zeyuan/micro/moon.common.api/server/user.db.rpc/pb/profile"
+	"github.com/li-zeyuan/micro/moon.common.api/utils"
 	"github.com/li-zeyuan/micro/user.db.rpc/app/model/inner"
 )
 

@@ -3,8 +3,8 @@ package interceptor
 import (
 	"context"
 
-	"github.com/li-zeyuan/micro/micro.common.api/logger"
-	"github.com/li-zeyuan/micro/micro.common.api/middleware"
+	"github.com/li-zeyuan/micro/moon.common.api/logger"
+	"github.com/li-zeyuan/micro/moon.common.api/middleware"
 	"github.com/li-zeyuan/micro/user.db.rpc/config"
 	"google.golang.org/grpc"
 	"gorm.io/gorm"

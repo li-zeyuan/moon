@@ -1,7 +1,7 @@
 package dao
 
 import (
-	"github.com/li-zeyuan/micro/micro.common.api/utils"
+	"github.com/li-zeyuan/micro/moon.common.api/utils"
 	"github.com/li-zeyuan/micro/user.logic.http/app/model"
 	"github.com/li-zeyuan/micro/user.logic.http/app/model/inner"
 	"github.com/li-zeyuan/micro/user.logic.http/library/middleware"

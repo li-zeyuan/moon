@@ -3,7 +3,7 @@ package inner
 import (
 	"time"
 
-	basemodel "github.com/li-zeyuan/micro/micro.common.api/model"
+	basemodel "github.com/li-zeyuan/micro/moon.common.api/model"
 )
 
 const (

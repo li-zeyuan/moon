@@ -11,7 +11,7 @@ import (
 	"github.com/li-zeyuan/micro/family.graph.http/boot"
 	"github.com/li-zeyuan/micro/family.graph.http/config"
 	"github.com/li-zeyuan/micro/family.graph.http/router"
-	"github.com/li-zeyuan/micro/micro.common.api/logger"
+	"github.com/li-zeyuan/micro/moon.common.api/logger"
 )
 
 // @title 家谱服务
