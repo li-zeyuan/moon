@@ -21,7 +21,6 @@ type profileAPI struct{}
 // @Description
 // @Accept  json
 // @Produce  json
-// @Param
 // @Router /api/profile/detail [post]
 // @Success 200 {object} model.ProfileApiDetailResp
 func (l *profileAPI) Detail(w http.ResponseWriter, r *http.Request) {
@@ -43,7 +42,6 @@ func (l *profileAPI) Detail(w http.ResponseWriter, r *http.Request) {
 // @Description
 // @Accept  json
 // @Produce  json
-// @Param
 // @Router /api/profile/update [post]
 // @Param req body model.ProfileApiUpdateRep true " "
 // @Success 200 {object} string "{"dm_error":0,"error_msg":"","data":{}}"
