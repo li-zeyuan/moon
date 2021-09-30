@@ -1,0 +1,154 @@
+definitions:
+  model.LoginApiPhoneLoginReq:
+    properties:
+      name:
+        type: string
+      passport:
+        type: string
+      password:
+        type: string
+      password2:
+        type: string
+    type: object
+  model.LoginApiWeChatLoginReq:
+    properties:
+      code:
+        type: string
+    type: object
+  model.ProfileApiDetailResp:
+    properties:
+      birth:
+        description: 生日
+        type: integer
+      gender:
+        description: 性别 1-男；2-女
+        type: integer
+      hometown:
+        description: 家乡
+        type: string
+      name:
+        description: 用户昵称
+        type: string
+      passport:
+        description: 用户账号
+        type: string
+      phone:
+        description: 手机
+        type: string
+      portrait:
+        description: 头像
+        type: string
+      uid:
+        description: 用户ID
+        type: integer
+      updated_at:
+        type: integer
+    type: object
+  model.ProfileApiUpdateRep:
+    properties:
+      birth:
+        description: 必填 生日
+        type: integer
+      gender:
+        description: 必填 性别
+        type: integer
+      hometown:
+        description: 家乡
+        type: string
+      name:
+        description: 必填 用户昵称
+        type: string
+      phone:
+        description: 手机号
+        type: string
+      portrait:
+        description: 头像
+        type: string
+    required:
+    - birth
+    type: object
+host: 39.108.101.229:80
+info:
+  contact: {}
+  description: 用户服务 API 文档.
+  title: 用户服务
+  version: "1.0"
+paths:
+  /api/login/phone_login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: ' '
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/model.LoginApiPhoneLoginReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"dm_error":0,"error_msg":"","data":{}}'
+          schema:
+            type: string
+      summary: 手机号登录
+      tags:
+      - 登录模块
+  /api/profile/detail:
+    post:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.ProfileApiDetailResp'
+      summary: 获取个人信息
+      tags:
+      - 用户资料模块
+  /api/profile/update:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: ' '
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/model.ProfileApiUpdateRep'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"dm_error":0,"error_msg":"","data":{}}'
+          schema:
+            type: string
+      summary: 更新个人信息
+      tags:
+      - 用户资料模块
+  /api/user_login/sing_up:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: ' '
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/model.LoginApiWeChatLoginReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"dm_error":0,"error_msg":"","data":{}}'
+          schema:
+            type: string
+      summary: 微信登录
+      tags:
+      - 登录模块
+swagger: "2.0"

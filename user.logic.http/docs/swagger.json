@@ -1,0 +1,232 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "用户服务 API 文档.",
+        "title": "用户服务",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "39.108.101.229:80",
+    "paths": {
+        "/api/login/phone_login": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "登录模块"
+                ],
+                "summary": "手机号登录",
+                "parameters": [
+                    {
+                        "description": " ",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.LoginApiPhoneLoginReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"dm_error\":0,\"error_msg\":\"\",\"data\":{}}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/profile/detail": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户资料模块"
+                ],
+                "summary": "获取个人信息",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.ProfileApiDetailResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/profile/update": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户资料模块"
+                ],
+                "summary": "更新个人信息",
+                "parameters": [
+                    {
+                        "description": " ",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.ProfileApiUpdateRep"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"dm_error\":0,\"error_msg\":\"\",\"data\":{}}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user_login/sing_up": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "登录模块"
+                ],
+                "summary": "微信登录",
+                "parameters": [
+                    {
+                        "description": " ",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.LoginApiWeChatLoginReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"dm_error\":0,\"error_msg\":\"\",\"data\":{}}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "model.LoginApiPhoneLoginReq": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "passport": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "password2": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.LoginApiWeChatLoginReq": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.ProfileApiDetailResp": {
+            "type": "object",
+            "properties": {
+                "birth": {
+                    "description": "生日",
+                    "type": "integer"
+                },
+                "gender": {
+                    "description": "性别 1-男；2-女",
+                    "type": "integer"
+                },
+                "hometown": {
+                    "description": "家乡",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "用户昵称",
+                    "type": "string"
+                },
+                "passport": {
+                    "description": "用户账号",
+                    "type": "string"
+                },
+                "phone": {
+                    "description": "手机",
+                    "type": "string"
+                },
+                "portrait": {
+                    "description": "头像",
+                    "type": "string"
+                },
+                "uid": {
+                    "description": "用户ID",
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.ProfileApiUpdateRep": {
+            "type": "object",
+            "required": [
+                "birth"
+            ],
+            "properties": {
+                "birth": {
+                    "description": "必填 生日",
+                    "type": "integer"
+                },
+                "gender": {
+                    "description": "必填 性别",
+                    "type": "integer"
+                },
+                "hometown": {
+                    "description": "家乡",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "必填 用户昵称",
+                    "type": "string"
+                },
+                "phone": {
+                    "description": "手机号",
+                    "type": "string"
+                },
+                "portrait": {
+                    "description": "头像",
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
