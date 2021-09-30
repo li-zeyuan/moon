@@ -2,13 +2,16 @@ package utils
 
 import (
 	"errors"
+	"os"
 	"strconv"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
 )
 
-const SecretKey = "4jAwLIKNF9llT1xlQb3JuxSseELYAj5Y"
+const secretEnvKey = "moon_jwt_secret"
+
+var SecretKey = os.Getenv(secretEnvKey)
 
 type JwtClaims struct {
 	Uid            int64

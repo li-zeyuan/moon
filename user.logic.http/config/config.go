@@ -51,13 +51,3 @@ func init() {
 		panic(err)
 	}
 }
-
-func GetServerClient(sClientName string) serverClient {
-	for _, c := range Conf.ServerClient {
-		if c.ServiceName == sClientName {
-			return c
-		}
-	}
-
-	return serverClient{}
-}

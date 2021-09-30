@@ -3,7 +3,7 @@ package main
 import (
 	"net"
 
-	"github.com/grpc-ecosystem/go-grpc-middleware"
+	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	"github.com/li-zeyuan/micro/moon.common.api/logger"
 	"github.com/li-zeyuan/micro/moon.common.api/server/user.db.rpc/pb/profile"
 	"github.com/li-zeyuan/micro/user.db.rpc/app/service"
