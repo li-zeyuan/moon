@@ -15,8 +15,8 @@ var (
 
 type server struct {
 	ServiceName string `toml:"service_name"`
-	Port        string
-	Timeout     int
+	Port        string `toml:"port"`
+	Timeout     int    `toml:"timeout"`
 }
 
 type serverClient struct {
