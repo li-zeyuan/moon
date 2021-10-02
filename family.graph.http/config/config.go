@@ -4,9 +4,10 @@ import (
 	"os"
 
 	"github.com/BurntSushi/toml"
+	"github.com/li-zeyuan/micro/moon.common.api/logger"
 )
 
-const ServerConfigPathEvnKey = "family_graph_http_config_path"
+const serverConfigPathEvnKey = "family_graph_http_config_path"
 
 var (
 	Conf Config
@@ -38,8 +39,9 @@ type Config struct {
 }
 
 func init() {
-	configPath := os.Getenv(ServerConfigPathEvnKey)
+	configPath := os.Getenv(serverConfigPathEvnKey)
 	_, err := toml.DecodeFile(configPath, &Conf)
+	logger.DefaultLogger.Info("config: ", Conf)
 	if err != nil {
 		panic(err)
 	}
