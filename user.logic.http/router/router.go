@@ -13,6 +13,7 @@ import (
 func Init(srv *http.ServeMux) {
 	r := httprouter.NewRouter()
 	r.Use(middlewareCommon.RequestIdMiddleware)
+	r.Use(middlewareCommon.RecoverMiddleware)
 	r.Use(middleware.InfraMiddleware)
 	r.Add("/api/login/phone_code", http.HandlerFunc(api.Login.PhoneCode))
 	r.Add("/api/login/phone_login", http.HandlerFunc(api.Login.PhoneLogin))

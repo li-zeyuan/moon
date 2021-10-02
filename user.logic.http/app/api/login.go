@@ -15,7 +15,7 @@ var Login = new(loginAPI)
 type loginAPI struct{}
 
 func (l *loginAPI) PhoneCode(w http.ResponseWriter, r *http.Request) {
-
+	//panic("hhh")
 }
 
 // PhoneLogin

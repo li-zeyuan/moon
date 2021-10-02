@@ -13,6 +13,7 @@ import (
 func Init(srv *http.ServeMux) {
 	r := httprouter.NewRouter()
 	r.Use(middlewareCommon.RequestIdMiddleware)
+	r.Use(middlewareCommon.RecoverMiddleware)
 	r.Use(middleware.InfraMiddleware)
 	r.Add("/api/family/create", http.HandlerFunc(api.Family.Create))
 	r.Add("/api/family/join", http.HandlerFunc(api.Family.Join))
